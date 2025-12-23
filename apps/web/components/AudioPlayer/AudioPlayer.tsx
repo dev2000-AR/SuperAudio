@@ -1,0 +1,413 @@
+import React, { useRef, useState, useEffect, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  CollectionsStatus,
+  getLikedSongs,
+  IStateProps,
+  LikedStatus,
+  nextSong,
+  onRepeat,
+  onShuffle,
+  playPause,
+  setTrackProgress,
+  getCollections,
+} from "../../stores/player/currentAudioPlayer";
+import Controls from "./Controls";
+import SeekBar from "./SeekBar";
+import Buttons from "./Buttons";
+import { useRouter } from "next/router";
+import FullScreenPlayer from "./FullScreenPlayer";
+import CustomImage from "../CustomImage";
+import EQ13Bandas from "./EQ13Bandas";
+
+function AudioPlayer({ className }: { className: string }) {
+  const router = useRouter();
+  const { user, status } = useSelector((state: any) => state.auth);
+  const {
+    isPlaying,
+    activeSong,
+    currentIndex,
+    trackProgress,
+    fetchlikedStatus,
+    collectionStatus,
+    tracks,
+    isShuffle,
+    isRepeat,
+  }: IStateProps = useSelector((state: any) => state.player);
+
+  const dispatch = useDispatch<any>();
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isReady = useRef(false);
+  const [volume, setVolume] = useState(1);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [seekBarColor, setSeekBarColor] = useState("#fff");
+  const [isCORSBlocked, setIsCORSBlocked] = useState(false);
+
+  // Estados para EQ
+  const [isEQActive, setIsEQActive] = useState(true);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const audioSourceRef = useRef<MediaElementAudioSourceNode | null>(null);
+  const [audioContextInitialized, setAudioContextInitialized] = useState(false);
+
+  const changeSeekBarColor = (color: string) => setSeekBarColor(color);
+
+  // Inicializar AudioContext
+  const initializeAudioContext = useCallback(() => {
+    if (!audioRef.current || audioContextRef.current || isCORSBlocked) return;
+    try {
+      console.log("Inicializando Audio Context...");
+      const ctx = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
+      const source = ctx.createMediaElementSource(audioRef.current);
+      audioContextRef.current = ctx;
+      audioSourceRef.current = source;
+      setAudioContextInitialized(true);
+      console.log("Audio Context inicializado exitosamente");
+      setIsCORSBlocked(false);
+    } catch (error) {
+      console.error("Error al inicializar Audio Context:", error);
+      setIsCORSBlocked(true);
+      setIsEQActive(false);
+    }
+  }, [isCORSBlocked]);
+
+  // Efecto principal para play/pause
+  useEffect(() => {
+    if (!audioRef.current) return;
+
+    const playAudio = async () => {
+      try {
+        if (!audioContextRef.current && !isCORSBlocked) {
+          initializeAudioContext();
+        }
+
+        if (
+          audioContextRef.current &&
+          audioContextRef.current.state === "suspended"
+        ) {
+          await audioContextRef.current.resume();
+        }
+
+        // ✅ CORRECCIÓN: Verificar que audioRef.current no sea null
+        if (audioRef.current) {
+          await audioRef.current.play();
+          startTimer();
+        }
+      } catch (error: any) {
+        console.error("Error al reproducir audio:", error);
+        if (
+          error.name?.includes("NotAllowedError") ||
+          error.name?.includes("NotSupportedError") ||
+          error.name?.includes("AbortError") ||
+          error.message?.includes("CORS") ||
+          error.message?.includes("cross-origin")
+        ) {
+          console.warn("Error CORS/permiso - desactivando EQ");
+          setIsCORSBlocked(true);
+          setIsEQActive(false);
+          audioContextRef.current = null;
+          audioSourceRef.current = null;
+          setAudioContextInitialized(false);
+
+          // Reintentar reproducción sin EQ
+          setTimeout(() => {
+            if (audioRef.current) {
+              audioRef.current.play().catch((e) => {
+                console.error("Error en reintento simple:", e);
+                dispatch(playPause(false));
+              });
+            }
+          }, 100);
+        } else {
+          dispatch(playPause(false));
+        }
+      }
+    };
+
+    if (isPlaying) {
+      playAudio();
+    } else {
+      // ✅ CORRECCIÓN: Verificar que audioRef.current no sea null
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    }
+  }, [isPlaying, isCORSBlocked, initializeAudioContext, dispatch]);
+
+  // Efecto para cambio de canción
+  useEffect(() => {
+    if (!audioRef.current || !activeSong) return;
+
+    console.log("Cambiando canción:", activeSong.track_name);
+    audioRef.current.pause();
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    audioRef.current.loop = isRepeat;
+    audioRef.current.crossOrigin = "anonymous";
+    audioRef.current.src = activeSong.src || "";
+    audioRef.current.load();
+
+    dispatch(setTrackProgress(0));
+
+    if (isReady.current && isPlaying) {
+      setTimeout(() => {
+        // ✅ CORRECCIÓN: Verificar que audioRef.current no sea null
+        if (audioRef.current) {
+          audioRef.current
+            .play()
+            .catch((err) => console.error("Error al reproducir nueva pista:", err));
+        }
+      }, 100);
+    }
+
+    if (!isReady.current) isReady.current = true;
+  }, [activeSong, currentIndex, isRepeat, isPlaying, dispatch]);
+
+  // Media Session API
+  useEffect(() => {
+    if ("mediaSession" in navigator && activeSong) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: activeSong.track_name || "-:--",
+        artist: activeSong.artist_name || "-:--",
+        // ✅ CORRECCIÓN: Usar el nombre del álbum correcto según la interfaz TrackProps
+        album: activeSong.artist_name || "-:--",
+        artwork: [
+          {
+            src: activeSong.cover_image?.url || "",
+            sizes: "512x512",
+            type: "image/jpeg",
+          },
+        ],
+      });
+
+      navigator.mediaSession.setActionHandler("play", () =>
+        dispatch(playPause(true))
+      );
+      navigator.mediaSession.setActionHandler("pause", () =>
+        dispatch(playPause(false))
+      );
+      navigator.mediaSession.setActionHandler("previoustrack", () =>
+        toPrevTrack()
+      );
+      navigator.mediaSession.setActionHandler("nexttrack", () =>
+        toNextTrack()
+      );
+    }
+  }, [activeSong, dispatch]);
+
+  const toNextTrack = () => {
+    if (isShuffle) {
+      dispatch(nextSong(Math.floor(Math.random() * tracks.length)));
+    } else if (tracks.length - 1 !== currentIndex) {
+      dispatch(nextSong(currentIndex + 1));
+    }
+  };
+
+  const toPrevTrack = () => {
+    if (isShuffle) {
+      dispatch(nextSong(Math.floor(Math.random() * tracks.length)));
+    } else if (currentIndex !== 0) {
+      dispatch(nextSong(currentIndex - 1));
+    }
+  };
+
+  const onScrub = (value: number) => {
+    if (!audioRef.current) return;
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    audioRef.current.currentTime = value;
+    dispatch(setTrackProgress(audioRef.current.currentTime));
+  };
+
+  const onScrubEnd = () => {
+    if (!isPlaying) dispatch(playPause(true));
+    startTimer();
+  };
+
+  const startTimer = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      if (audioRef.current?.ended) {
+        toNextTrack();
+      } else if (audioRef.current) {
+        dispatch(setTrackProgress(audioRef.current.currentTime));
+      }
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (user && status === "succeeded") {
+      // ✅ CORRECCIÓN: Verificar los valores correctos del enum LikedStatus
+      if (fetchlikedStatus === LikedStatus.Initial) {
+        dispatch(getLikedSongs(user.id));
+      }
+      // ✅ CORRECCIÓN: Verificar los valores correctos del enum CollectionsStatus
+      if (collectionStatus === CollectionsStatus.Initial) {
+        dispatch(getCollections(user.id));
+      }
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [user, status, fetchlikedStatus, collectionStatus, dispatch]);
+
+  const getFormattedTime = (time: number) => {
+    if (!activeSong || activeSong.id === 100000000000000087) return "-:--";
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
+
+  const updateVolume = (e: number) => {
+    setVolume(e);
+    if (audioRef.current) {
+      audioRef.current.volume = e;
+    }
+  };
+
+  const currentPercentage = activeSong?.duration
+    ? `${(trackProgress / activeSong.duration) * 100}%`
+    : "0%";
+
+  const trackBarStyling = `
+    -webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, ${seekBarColor}), color-stop(${currentPercentage}, #000))`;
+
+  const isTrackBlocked = !activeSong || activeSong.id === 100000000000000087;
+
+  return (
+    <>
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          router.push("/playing");
+        }}
+        className={`barmusichome microstilingbase font-ProximaRegular 
+          fixed bottom-0 left-0 right-0 py-3 px-4 pb-4
+          mobile:py-1 mobile:px-2 z-20
+          mobile:bottom-12 tablet:bottom-12
+          bg-[#121212] 
+          select-none ${className}`}
+      >
+        <div
+          className="microstiling flex flex-row 
+            items-center justify-between 
+            w-screen max-w-full mini-laptop:px-2 mobile:p-2 mobile:pb-0"
+        >
+          <div className="microstiling33 flex flex-row items-center w-full cursor-pointer">
+            <div
+              style={{
+                backgroundColor: activeSong?.cover_image?.color,
+                boxShadow:
+                  "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
+                opacity: isTrackBlocked ? 0.5 : 1,
+              }}
+              className="w-[50px] h-[50px] min-w-[50px]
+                relative mini-laptop:w-[40px] mini-laptop:h-[40px]
+                mini-laptop:min-w-[40px] mobile:min-w-[35px] mobile:w-[35px]
+                mobile:h-[35px] cursor-pointer rounded-sm"
+            >
+              {activeSong?.cover_image?.url && (
+                <CustomImage
+                  src={activeSong.cover_image.url}
+                  className="rounded-sm w-[50px] h-[50px]"
+                />
+              )}
+            </div>
+
+            <div className="mx-4 mobile:mx-3">
+              <p className="text-gray-300 cursor-pointer line-clamp-1 mobile:text-sm">
+                {isTrackBlocked ? "-:--" : activeSong?.track_name}
+              </p>
+
+              <p
+                className="text-gray-400 text-sm mobile:text-xs hover:underline cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (activeSong?.artist_id) {
+                    router.push(`/artist/${activeSong.artist_id}`);
+                  }
+                }}
+              >
+                {isTrackBlocked ? "-:--" : activeSong?.artist_name}
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <Controls
+              isFullScreen={false}
+              isShuffle={isShuffle}
+              isRepeat={isRepeat}
+              onRepeat={() => dispatch(onRepeat(!isRepeat))}
+              onShuffle={() => dispatch(onShuffle(!isShuffle))}
+              playPause={() => dispatch(playPause(!isPlaying))}
+              isPlaying={isPlaying}
+              nextSong={toNextTrack}
+              prevSong={toPrevTrack}
+            />
+
+            <SeekBar
+              changeSeekBarColor={changeSeekBarColor}
+              trackProgress={trackProgress}
+              trackBarStyling={trackBarStyling}
+              audioRef={audioRef}
+              isFullScreen={false}
+              activeSong={activeSong!}
+              onScrubEnd={onScrubEnd}
+              onScrub={onScrub}
+              isPlaying={isPlaying}
+              onPlayPause={() => dispatch(playPause(!isPlaying))}
+            />
+          </div>
+
+          <Buttons
+            track_id={activeSong?.id || 0}
+            updateVolume={updateVolume}
+            showVolumeSeekBar
+            volume={volume}
+            className="tablet:hidden mobile:hidden"
+          />
+        </div>
+
+        <audio
+          id="v"
+          ref={audioRef}
+          src={activeSong?.src}
+          crossOrigin="anonymous"
+          onError={(e) => {
+            console.log("Audio element error:", e);
+            setIsCORSBlocked(true);
+            setIsEQActive(false);
+          }}
+          onCanPlay={() => {
+            console.log("Audio puede reproducirse");
+            setIsCORSBlocked(false);
+          }}
+          onLoadStart={() => {
+            console.log("Cargando audio...");
+          }}
+          onLoadedMetadata={() => {
+            console.log("Metadata del audio cargada");
+          }}
+        />
+      </div>
+
+      {audioContextRef.current && audioSourceRef.current && !isCORSBlocked && (
+        <EQ13Bandas
+          audioContext={audioContextRef.current}
+          audioSource={audioSourceRef.current}
+          isActive={isEQActive}
+          onToggle={setIsEQActive}
+        />
+      )}
+
+      {isCORSBlocked && (
+        <div className="fixed bottom-20 right-4 z-50 p-3 bg-yellow-600 text-white rounded shadow-lg text-sm max-w-xs">
+          ⚡ Audio en modo básico (EQ desactivado por políticas del servidor)
+        </div>
+      )}
+    </>
+  );
+}
+
+export default AudioPlayer;

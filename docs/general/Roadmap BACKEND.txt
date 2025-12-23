@@ -1,0 +1,47 @@
+ROADMAP BACKEND (API & AUDIO ENGINE) - NUEVO REPOSITORIO
+Proyecto: SuperAudio (v2 Greenfield)
+
+FASE 1: INFRAESTRUCTURA Y CONECTIVIDAD (Semanas 1-2)
+------------------------------------------------------------
+Setup del API Gateway y conexión con MassiveMusic.
+
+1. NESTJS SETUP
+• [ ] Inicializar API Principal (Gestión de Usuarios/Metadata).
+• [ ] Inicializar Worker Service (Microservicio de Procesamiento de Audio).
+• [ ] Configurar Redis (necesario para las colas de trabajos).
+
+2. INTEGRACIÓN MASSIVEMUSIC (SOURCE)
+• [ ] Cliente HTTP para autenticar y obtener URLs de descarga de los archivos FLAC ("High Res").
+
+FASE 2: EL MOTOR DE AUDIO (AUDIO ENGINE) (Semanas 3-6)
+------------------------------------------------------------
+El corazón del negocio: Codec Propietario.
+
+1. PIPELINE DE PROCESAMIENTO (BULLMQ)
+• [ ] Crear Cola `audio-transcoding`.
+• [ ] Job Processor: 
+    1. Recibe `massive_track_id`.
+    2. Descarga FLAC temporalmente.
+    3. Ejecuta binario del CODEC propio (Input FLAC -> Output Optimizado).
+    4. Sube archivo optimizado a AWS S3.
+    5. Borra temporales.
+
+2. GESTIÓN DE CATÁLOGO LOCAL
+• [ ] Tabla `AudioAssets` en Postgres:
+    - `massive_id` (Index)
+    - `s3_key` (Ubicación de nuestro archivo)
+    - `status` (processing, ready, failed)
+• [ ] Endpoint `/track/stream/:id`:
+    - Verifica si existe en `AudioAssets`.
+    - Si existe: Devuelve URL firmada de CloudFront.
+    - Si NO existe: Gatilla el Job de procesamiento (Alta Prioridad) y avisa al cliente que espere (o devuelve el stream de Massive como fallback temporal mientras se procesa).
+
+FASE 3: USUARIOS Y LOGGING (Semanas 7-8)
+------------------------------------------------------------
+• [ ] Sync de usuarios Firebase <-> Massive.
+• [ ] **Logging Proxy**: Cuando el usuario reproduce NUESTRO archivo, el backend debe enviar el "beat" a la Logging API de MassiveMusic para cumplir contratos legales.
+
+FASE 4: OPERACIONES DE ESCALADO (Semana 9+)
+------------------------------------------------------------
+• [ ] Auto-Scaling para los Workers de Audio (Si hay mucha demanda de canciones nuevas, subir más servidores CPU-Optimized).
+• [ ] Configurar políticas de ciclo de vida en S3 (Tiering) para ahorrar costos.

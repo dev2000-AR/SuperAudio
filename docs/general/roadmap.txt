@@ -1,0 +1,73 @@
+ROADMAP MAESTRO - PROYECTO SUPERAUDIO V2 (DESDE CERO)
+Estrategia: Greenfield / Monorepo / Audio Engine Propio
+
+FASE 1: CIMIENTOS E INFRAESTRUCTURA (Semanas 1-2)
+Objetivo: Configurar el entorno de desarrollo unificado y los servicios cloud.
+
+*   [ ] **Inicialización del Monorepo:**
+    *   Configurar Turborepo para orquestar Web (Next.js), Mobile (Expo) y Backend (NestJS).
+    *   Establecer reglas de Linting (ESLint) y Formato (Prettier) estrictas compartidas.
+    *   Crear librería de componentes UI compartida (`packages/ui`).
+
+*   [ ] **Infraestructura de Base de Datos:**
+    *   Levantar contenedor Docker con PostgreSQL.
+    *   Inicializar Prisma ORM.
+    *   Diseñar esquema inicial: `Users`, `AudioAssets` (nuestro catálogo procesado), `Subscriptions`.
+
+*   [ ] **Identidad y Seguridad:**
+    *   Configurar proyecto en Firebase Console (Auth).
+    *   Configurar proyecto en AWS (S3 + CloudFront) para el almacenamiento de audio optimizado.
+    *   Configurar acceso a API de MassiveMusic (guardar credenciales seguramente).
+
+FASE 2: BACKEND CORE & USUARIOS (Semanas 3-4)
+Objetivo: Gestión de usuarios y conexión entre Firebase y nuestro sistema.
+
+*   [ ] **API Gateway (NestJS):**
+    *   Implementar `AuthGuard` para validar tokens de Firebase.
+    *   Crear lógica de "Sincronización de Usuarios" (Webhook/Endpoint): Al registrarse en Firebase, crear entrada en Postgres.
+
+*   [ ] **Integración MassiveMusic (Usuarios):**
+    *   Implementar servicio que provisione el usuario en la API de MassiveMusic cuando se crea en nuestra BD.
+    *   Implementar verificación de estado de suscripción (Pasarela de Pagos + Massive Subscription API).
+
+FASE 3: EL MOTOR DE AUDIO (AUDIO ENGINE) (Semanas 5-8)
+Objetivo: El corazón del negocio. Pipeline de descarga, conversión y almacenamiento.
+
+*   [ ] **Sistema de Colas (Workers):**
+    *   Configurar Redis y BullMQ en NestJS.
+    *   Crear worker `audio-processor` separado del hilo principal HTTP.
+
+*   [ ] **Pipeline de Codec Propio:**
+    *   Paso 1: Recibir ID de MassiveMusic.
+    *   Paso 2: Descargar FLAC temporal desde Massive "Media Delivery API".
+    *   Paso 3: **Ejecutar CODEC PROPIO** (Binario/Librería).
+    *   Paso 4: Subir resultado optimizado a AWS S3.
+    *   Paso 5: Registrar en base de datos (`AudioAssets`) que la canción está lista.
+
+*   [ ] **API de Streaming:**
+    *   Endpoint `/stream/:id`: Devuelve URL firmada de CloudFront si el activo existe. Si no, gatilla el proceso de conversión y maneja el estado de "Procesando".
+
+FASE 4: FRONTEND (WEB & APP) - CASCO Y DISCOVERY (Semanas 9-11)
+Objetivo: Que el usuario pueda navegar y buscar música.
+
+*   [ ] **Búsqueda (Search):**
+    *   Conectar Frontends (Web/Mobile) a la "Catalogue API" de MassiveMusic para búsquedas en tiempo real.
+    *   UI de resultados de búsqueda unificada.
+
+*   [ ] **Reproductor Inteligente (Player):**
+    *   Desarrollar lógica de UI para estados: "Cargando", "Optimizando Audio", "Reproduciendo".
+    *   Integrar reproductor de audio nativo (`expo-av` / HTML5 Audio) capaz de leer el formato de nuestro Codec.
+
+FASE 5: COMPLIANCE, LOGGING Y LANZAMIENTO (Semanas 12-14)
+Objetivo: Cumplir con la ley y lanzar.
+
+*   [ ] **Sistema de Reportes (Vital):**
+    *   Implementar "Heartbeat" en el Frontend: Cada 30 seg de reproducción, enviar ping al Backend.
+    *   Backend reenvía ese reporte a la "Logging API" de MassiveMusic (Regalías).
+
+*   [ ] **Pagos:**
+    *   Integrar Stripe/MercadoPago para cobrar las suscripciones y activar el servicio en el Backend.
+
+*   [ ] **Optimizaciones Finales:**
+    *   Load Testing del Codec (¿Cuántas canciones por minuto podemos convertir?).
+    *   Deploy a Producción (Vercel/Railway/AWS).

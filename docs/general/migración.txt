@@ -1,0 +1,54 @@
+# Plan de Migración a Mono Repo: Estructura "Copy-Safe"
+
+**Objetivo:** Crear un nuevo **Mono Repo** desde cero en la carpeta `SuperAudio - MonoRepo`, copiando el código desde el repositorio existente `SuperAudio - MultiRepo`. **El repositorio original NO SE TOCARÁ** para preservar un backup funcional y limpio.
+
+## 1. Estructura de Directorios
+
+*   **Raíz de Trabajo:** `c:\Users\HHHES\Desktop\apps\SuperAudio\`
+*   **Fuente (Read-Only):** `SuperAudio - MultiRepo/`
+    *   Contiene el frontend en `web2/`
+    *   Contiene el backend en `Backend/server/`
+*   **Destino (Nuevo Repo):** `SuperAudio - MonoRepo/`
+    *   Aquí es donde construiremos la nueva arquitectura.
+
+## 2. Estructura Mono Repo (Destino)
+
+```text
+SuperAudio - MonoRepo/       (Nuevo Raíz Git)
+├── .git/                    (Git limpio e inicializado)
+├── package.json             (Configuración Workspaces)
+├── turbo.json               (Orquestación)
+├── apps/
+│   ├── web/                 (Copia limpia de 'web2')
+│   └── api/                 (Copia limpia de 'Backend/server')
+└── docs/
+    └── ...                  (Copias de documentación)
+```
+
+## 3. Hoja de Ruta de Ejecución
+
+### Paso 1: Inicialización del Mono Repo
+1.  **Limpiar Destino:** Asegurar que `SuperAudio - MonoRepo` esté listo.
+2.  **Inicialización:** Ejecutar `yarn init -y` y `git init` dentro de `SuperAudio - MonoRepo`.
+3.  **Configuración Base:** Crear `package.json` raíz y `turbo.json` configurados para workspaces.
+
+### Paso 2: Migración "Non-Destructive Clone" (Copia)
+1.  **Copiar Frontend:**
+    *   Copiar contenido de `../SuperAudio - MultiRepo/web2` -> `apps/web`.
+    *   *Excluir:* `node_modules`, `.next`, `.git` original.
+2.  **Copiar Backend:**
+    *   Copiar contenido de `../SuperAudio - MultiRepo/Backend/server` -> `apps/api`.
+    *   *Excluir:* `node_modules`, `dist`, `.git` original.
+3.  **Copiar Documentación:**
+    *   Copiar archivos `.txt`/`.md` relevantes de `../SuperAudio - MultiRepo` -> `docs/`.
+
+### Paso 3: Unificación de Dependencias
+1.  **Limpieza de Lockfiles:** Eliminar `yarn.lock` o `package-lock.json` copiados dentro de `apps/web` y `apps/api` para regenerarlos desde la raíz.
+2.  **Instalación Global:** Ejecutar `yarn install` en `SuperAudio - MonoRepo` para vincular todo.
+
+### Paso 4: Verificación
+1.  Verificar que el proyecto original `MultiRepo` sigue intacto.
+2.  Verificar que el nuevo `MonoRepo` levanta los servicios (`yarn dev`).
+
+---
+**Nota:** Este enfoque garantiza "Riesgo Cero" para el código existente, ya que trabajamos sobre una copia aislada.

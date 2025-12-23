@@ -1,0 +1,38 @@
+ROADMAP FRONTEND (WEB & MOBILE) - NUEVO REPOSITORIO
+Proyecto: SuperAudio (v2 Greenfield)
+
+CAMBIO IMPORTANTE: La App reproduce archivos optimizados desde NUESTRA NUBE.
+
+FASE 1: FUNDAMENTOS (Semanas 1-2)
+------------------------------------------------------------
+• [ ] Setup Monorepo (Next.js + Expo).
+• [ ] Integración Firebase Auth (Identidad).
+
+FASE 2: DISCOVERY (CATÁLOGO) (Semanas 3-5)
+------------------------------------------------------------
+La búsqueda sigue, en gran medida, consultando la metadata de MassiveMusic.
+
+1. BÚSQUEDA HÍBRIDA
+• [ ] El usuario busca "Artist X".
+• [ ] La App consulta a MassiveMusic "Catalogue API" para mostrar resultados rápidos (Títulos, Portadas).
+• [ ] *Opcional*: Consultar a nuestro Backend qué canciones de esos resultados ya están "Optimizadas y Listas".
+
+FASE 3: REPRODUCTOR INTELIGENTE (Semanas 6-9)
+------------------------------------------------------------
+Lógica compleja de selección de fuente.
+
+1. LÓGICA DE PLAYPACK
+• [ ] Al dar Play, solicitar stream a NUESTRO Backend (`/track/stream/:id`).
+• [ ] Manejo de Estados de Asset:
+    - `READY`: Reproducir URL optimizada (S3/CDN).
+    - `PROCESSING`: Mostrar spinner o mensaje "Optimizando para ti..." (o fallback a stream directo de Massive si la latencia es crítica).
+    - `ERROR`: Fallback automático.
+
+2. SOPORTE DE FORMATO PROPIO
+• [ ] Si el "Codec Propio" genera un formato estándar (AAC, MP3, OPUS), usar reproductor nativo (`expo-av`).
+• [ ] Si el formato es **completamente propietario/custom**, se requerirá desarrollar/integrar un decodificador (WASM para Web, Módulo Nativo C++ para Mobile) en el reproductor. **ESTO ES UN RIESGO TÉCNICO ALTO**.
+
+FASE 4: TELEMETRÍA Y ANALÍTICA (Semanas 10+)
+------------------------------------------------------------
+• [ ] Reportar consumo de canciones a nuestro Backend (que a su vez reporta a Massive).
+• [ ] Medir tiempos de buffer y latencia para evaluar la calidad del Codec propio.

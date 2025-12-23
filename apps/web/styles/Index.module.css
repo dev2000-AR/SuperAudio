@@ -1,0 +1,140 @@
+.classista  {
+      margin: 0;
+      font-family: 'SuperFont', sans-serif;
+      background-color: #0d0d0d;
+      color: white;
+      text-align: center;
+      padding-top: 60px;
+      overflow: hidden;
+      position: relative;
+    }
+
+   .classista .classista::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://superaudio.online/landing_page.png');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.1;
+      z-index: -1;
+      animation: fadeInOut 10s infinite alternate;
+    }
+
+    @keyframes fadeInOut {
+      from {
+        opacity: 0.1;
+      }
+      to {
+        opacity: 0.3;
+      }
+    }
+
+   .classista .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: black;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      z-index: 1000;
+    }
+
+   .classista .navbar-brand {
+      display: flex;
+      align-items: center;
+    }
+
+   .classista .navbar-brand img {
+      width: 40px;
+      height: 40px;
+    }
+
+   .classista .navbar-brand h1 {
+      margin-left: 10px;
+      font-size: 24px;
+      text-transform: lowercase;
+    }
+
+   .classista .menu-icon {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+    }
+
+   .classista .navbar-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: black;
+      position: absolute;
+      top: 60px;
+      right: 0;
+      width: 100%;
+      padding: 20px 0;
+      display: none;
+    }
+
+   .classista .navbar-links.active {
+      display: flex;
+    }
+
+   .classista .navbar-links a {
+      color: white;
+      text-decoration: none;
+      margin: 10px 0;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+   .classista .navbar-links a:hover {
+      text-decoration: underline;
+    }
+
+   .classista .navbar-links a span {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+
+   .classista .content {
+      margin-top: 50px;
+    }
+
+   .classista .content img {
+      width: 300px;
+      height: auto;
+    }
+
+   .classista .content p {
+      font-size: 18px;
+      color: #cccccc;
+      margin-top: 20px;
+    }
+
+   .classista .footer {
+      background-color: black;
+      color: #666666;
+      text-align: center;
+      padding: 10px 0;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+      font-family: Helvetica, sans-serif;
+      font-size: 12px;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 768px) {
+     .classista .menu-icon {
+        display: block;
+      }
+    }

@@ -1,0 +1,18 @@
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: false,
+   images: { domains: ["images.unsplash.com", "s3.us-west-2.amazonaws.com",   "dig0ubfhli3b0.cloudfront.net"] },
+
+  compiler: {
+    styledComponents: false,
+  },
+assetPrefix:"https://superaudio.online",
+  env: {
+   // MUSIVE_API_URL: "http://localhost:4344/api",
+    ALGOLIA_APP_ID: "XLHDMY0KME",
+    ALGOLIA_API_KEY: "2eef844f139e96fb4b3442d62e8bdbd9",
+  },
+ // output: 'export',
+};
+
+module.exports = nextConfig;

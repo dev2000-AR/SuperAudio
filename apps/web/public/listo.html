@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouP Video Player - Futuristic Edition</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #151521;
+            --bg-tertiary: #1e1e2e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0c0;
+            --accent: #00d4ff;
+            --accent-glow: rgba(0, 212, 255, 0.4);
+            --accent-hover: #00b8e6;
+            --surface: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.12);
+            --eq-glow: #ff3bf2;
+            --danger: #ff4757;
+            --success: #2ed573;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        /* Header mejorado */
+        header {
+            text-align: center;
+            padding: 1.5rem 0;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 300;
+        }
+        
+        /* Video wrapper mejorado */
+        .video-wrapper {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .video-wrapper:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        #videoPlayer {
+            width: 100%;
+            height: auto;
+            display: block;
+            background: #000;
+        }
+
+        /* Player controls mejorado */
+        .player-container {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .player-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .control-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            border-radius: 12px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .control-btn:hover {
+            background: var(--accent);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+        
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            color: #000;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+        
+        .play-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-3px) scale(1.05);
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: var(--surface);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--eq-glow));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.1s ease;
+            position: relative;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            transform: translate(50%, -25%);
+            box-shadow: 0 0 10px var(--accent);
+        }
+        
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+        }
+        
+        .volume-slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            background: var(--surface);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        /* EQ Container mejorado */
+        .eq-container {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .module-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .module-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 3px;
+            background: var(--text-secondary);
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(28px);
+            background: white;
+        }
+        
+        .frequency-viz {
+            width: 100%;
+            height: 140px;
+            margin-bottom: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+        
+        #cv {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        
+        .frequency-labels {
+            position: absolute;
+            bottom: 8px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 15px;
+            font-size: 10px;
+            color: var(--text-secondary);
+            pointer-events: none;
+            font-weight: 500;
+        }
+        
+        .eq-bands {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .band {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .band-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .band-slider {
+            writing-mode: bt-lr;
+            -webkit-appearance: slider-vertical;
+            width: 100%;
+            height: 140px;
+            background: transparent;
+            outline: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            cursor: pointer;
+        }
+        
+        .band-slider:hover {
+            opacity: 1;
+        }
+        
+        .band-value {
+            font-size: 0.8rem;
+            margin-top: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+        
+        .preset-selector {
+            background: var(--surface);
+            color: var(--text-primary);
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-weight: 500;
+            min-width: 180px;
+        }
+        
+        .advanced-toggle {
+            background: var(--surface);
+            color: var(--text-primary);
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .advanced-toggle:hover {
+            background: var(--accent);
+            color: #000;
+        }
+        
+        .advanced-options {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: none;
+        }
+        
+        .advanced-options.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .option-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .option-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .option-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .option-control {
+            background: var(--surface);
+            color: var(--text-primary);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        .status {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            min-height: 1.5rem;
+            font-weight: 500;
+        }
+
+        .viz-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .viz-mode-btn {
+            background: var(--surface);
+            color: var(--text-secondary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .viz-mode-btn.active {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .eq-bands {
+                grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+                gap: 0.8rem;
+            }
+            .band-slider { height: 120px; }
+            h1 { font-size: 1.8rem; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .preset-selector, .advanced-toggle {
+                width: 100%;
+                justify-content: center;
+            }
+            .player-controls { gap: 1rem; }
+            .control-btn { width: 45px; height: 45px; }
+            .play-btn { width: 55px; height: 55px; }
+            .frequency-viz { height: 120px; }
+            .option-group { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 480px) {
+            .eq-bands { grid-template-columns: repeat(4, 1fr); }
+            .band-slider { height: 100px; }
+            .frequency-viz { height: 100px; }
+            .viz-controls { flex-wrap: wrap; }
+            .module-header { flex-direction: column; gap: 1rem; align-items: flex-start; }
+            .module-toggle { align-self: flex-end; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>YouP Video Player</h1>
+            <p class="subtitle">Experiencia audiovisual futurista con ecualizador de 13 bandas</p>
+        </header>
+
+        <div class="video-wrapper">
+            <video id="videoPlayer" crossorigin="anonymous" src="https://supercdn.superaudio.online/cdn1/recitals/paoliti/robin/vid.mp4" playsinline></video>
+        </div>
+        
+        <div class="player-container">
+            <div class="player-controls">
+                <button class="control-btn" id="prevBtn" title="Reiniciar Video">⏮</button>
+                <button class="control-btn play-btn" id="playBtn" title="Reproducir/Pausar">▶</button>
+                <button class="control-btn" id="nextBtn" title="Avanzar 10s">⏭</button>
+            </div>
+            
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div class="time-display">
+                <span id="currentTime">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+            
+            <div class="volume-control">
+                <span>🔈</span>
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+                <span>🔊</span>
+            </div>
+        </div>
+        
+        <div class="eq-container">
+            <div class="module-header">
+                <div class="module-title">Módulo YouP - Ecualizador 13 Bandas</div>
+                <div class="module-toggle">
+                    <span>OFF</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="eqToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>ON</span>
+                </div>
+            </div>
+            
+            <div class="viz-controls">
+                <button class="viz-mode-btn active" data-mode="bars">Barras</button>
+                <button class="viz-mode-btn" data-mode="waveform">Ondas</button>
+                <button class="viz-mode-btn" data-mode="circular">Circular</button>
+            </div>
+            
+            <div class="frequency-viz">
+                <canvas id="cv"></canvas>
+                <div class="frequency-labels">
+                    <span>55Hz</span>
+                    <span>89Hz</span>
+                    <span>144Hz</span>
+                    <span>233Hz</span>
+                    <span>377Hz</span>
+                    <span>610Hz</span>
+                    <span>987Hz</span>
+                    <span>1.6KHz</span>
+                    <span>2.6KHz</span>
+                    <span>4.2KHz</span>
+                    <span>6.8KHz</span>
+                    <span>10.9KHz</span>
+                    <span>17.7KHz</span>
+                </div>
+            </div>
+            
+            <div class="eq-bands" id="eqBands">
+                <!-- Los sliders se generarán dinámicamente -->
+            </div>
+            
+            <div class="controls">
+                <select class="preset-selector" id="presetSelector">
+                    <option value="Dance">Dance (Activo)</option>
+                    <option value="Default">Plano (Apagado)</option>
+                    <option value="Manual">Manual</option>
+                </select>
+                
+                <button class="advanced-toggle" id="advancedToggle">Opciones Avanzadas</button>
+            </div>
+            
+            <div class="advanced-options" id="advancedOptions">
+                <div class="option-group">
+                    <div class="option-item">
+                        <label class="option-label">Modo de Visualización</label>
+                        <select class="option-control" id="vizQuality">
+                            <option value="high">Alta Calidad</option>
+                            <option value="medium" selected>Media Calidad</option>
+                            <option value="low">Baja Calidad</option>
+                        </select>
+                    </div>
+                    <div class="option-item">
+                        <label class="option-label">Suavizado de Audio</label>
+                        <select class="option-control" id="smoothing">
+                            <option value="0.9">Alto</option>
+                            <option value="0.8" selected>Medio</option>
+                            <option value="0.7">Bajo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="option-group">
+                    <div class="option-item">
+                        <label class="option-label">Tamaño FFT</label>
+                        <select class="option-control" id="fftSize">
+                            <option value="4096">4096 (Máxima)</option>
+                            <option value="2048" selected>2048 (Alta)</option>
+                            <option value="1024">1024 (Media)</option>
+                            <option value="512">512 (Baja)</option>
+                        </select>
+                    </div>
+                    <div class="option-item">
+                        <label class="option-label">Rango de Frecuencia</label>
+                        <select class="option-control" id="frequencyRange">
+                            <option value="full" selected>Completo (20Hz-20kHz)</option>
+                            <option value="vocal">Vocal (80Hz-4kHz)</option>
+                            <option value="bass">Bajos (20Hz-250Hz)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="status" id="statusMessage">Inicia la reproducción para activar el AudioContext.</div>
+        </div>
+    </div>
+
+    <footer>
+        YouP Video Player &copy; 2023 - Sistema de audio avanzado con procesamiento en tiempo real
+    </footer>
+
+    <script>
+        // Configuración
+        const frequencies = [55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711];
+        const presets = {
+            Dance: [8, 5, 3, 3, 1, 3, 3, 3, 3, 3, 8, 8, 13],
+            Default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            Manual: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        };
+        
+        // Estado
+        let audioContext;
+        let analyser;
+        let eqFilters = [];
+        let sourceNode;
+        let isEqActive = true;
+        let currentPreset = 'Dance';
+        let dataArray;
+        let bufferLength;
+        let visualizationMode = 'bars';
+        
+        // Elementos DOM
+        const eqBands = document.getElementById('eqBands');
+        const presetSelector = document.getElementById('presetSelector');
+        const eqToggle = document.getElementById('eqToggle');
+        const statusMessage = document.getElementById('statusMessage');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const canvas = document.getElementById('cv');
+        const canvasCtx = canvas.getContext('2d');
+        const vizModeButtons = document.querySelectorAll('.viz-mode-btn');
+        const advancedToggle = document.getElementById('advancedToggle');
+        const advancedOptions = document.getElementById('advancedOptions');
+        
+        const playBtn = document.getElementById('playBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const volumeSlider = document.getElementById('volumeSlider');
+        
+        // Inicializar
+        function init() {
+            createBandSliders();
+            setupEventListeners();
+            applyPreset('Dance');
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            requestAnimationFrame(updateVisualization);
+        }
+        
+        // Crear sliders para cada banda
+        function createBandSliders() {
+            eqBands.innerHTML = '';
+            
+            frequencies.forEach((freq, index) => {
+                const bandDiv = document.createElement('div');
+                bandDiv.className = 'band';
+                
+                const label = document.createElement('div');
+                label.className = 'band-label';
+                const displayFreq = freq >= 1000 ? `${(freq/1000).toFixed(1).replace('.0', '')}K` : freq;
+                label.textContent = displayFreq;
+                
+                const slider = document.createElement('input');
+                slider.type = 'range';
+                slider.className = 'band-slider';
+                slider.min = '-13';
+                slider.max = '13';
+                slider.value = '0';
+                slider.orient = 'vertical';
+                slider.dataset.index = index;
+                
+                const valueDisplay = document.createElement('div');
+                valueDisplay.className = 'band-value';
+                valueDisplay.textContent = '0 dB';
+                valueDisplay.id = `value-${index}`;
+                
+                bandDiv.appendChild(label);
+                bandDiv.appendChild(slider);
+                bandDiv.appendChild(valueDisplay);
+                eqBands.appendChild(bandDiv);
+                
+                // Evento para el slider
+                slider.addEventListener('input', function() {
+                    const value = parseFloat(this.value);
+                    document.getElementById(`value-${index}`).textContent = `${value} dB`;
+                    
+                    if (eqFilters[index]) {
+                        eqFilters[index].gain.value = value;
+                    }
+                    
+                    presetSelector.value = 'Manual';
+                    currentPreset = 'Manual';
+                });
+            });
+        }
+        
+        // Configurar el contexto de audio y la conexión
+        function setupAudioContext() {
+            if (audioContext) return;
+            
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 2048;
+                analyser.smoothingTimeConstant = 0.8;
+                
+                bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+                
+                createEqFilters();
+                
+                // Conectar el audio del video al contexto de audio
+                sourceNode = audioContext.createMediaElementSource(videoPlayer);
+                
+                // Configurar el ruteo
+                connectNodes();
+                
+                statusMessage.textContent = 'Ecualizador conectado. Presiona Play ▶';
+            } catch (e) {
+                statusMessage.textContent = 'Error al inicializar el ecualizador: ' + e.message;
+                console.error(e);
+            }
+        }
+        
+        // Crear filtros para el ecualizador
+        function createEqFilters() {
+            eqFilters = [];
+            
+            frequencies.forEach(freq => {
+                const filter = audioContext.createBiquadFilter();
+                filter.type = 'peaking';
+                filter.frequency.value = freq;
+                filter.Q.value = 1.0;
+                filter.gain.value = 0;
+                eqFilters.push(filter);
+            });
+        }
+
+        // Conectar el Web Audio API
+        function connectNodes() {
+            if (!audioContext || !sourceNode) return;
+            
+            // Desconectar todo antes de reconectar
+            sourceNode.disconnect();
+            eqFilters.forEach(filter => filter.disconnect());
+            
+            // Conectar la fuente al analizador (siempre)
+            sourceNode.connect(analyser);
+            
+            if (isEqActive) {
+                // Conectar Fuente -> Filtro[0] -> ... -> Filtro[N] -> Destino
+                sourceNode.connect(eqFilters[0]);
+                
+                for (let i = 0; i < eqFilters.length - 1; i++) {
+                    eqFilters[i].connect(eqFilters[i + 1]);
+                }
+                
+                eqFilters[eqFilters.length - 1].connect(audioContext.destination);
+            } else {
+                // Conectar Fuente -> Destino (bypass)
+                sourceNode.connect(audioContext.destination);
+            }
+        }
+
+        // Aplicar un preset
+        function applyPreset(presetName) {
+            if (!presets[presetName]) return;
+            
+            currentPreset = presetName;
+            const values = presets[presetName];
+            
+            values.forEach((value, index) => {
+                const slider = document.querySelector(`.band-slider[data-index="${index}"]`);
+                const valueDisplay = document.getElementById(`value-${index}`);
+                
+                if (slider && valueDisplay) {
+                    slider.value = value;
+                    valueDisplay.textContent = `${value} dB`;
+                    
+                    if (eqFilters[index]) {
+                        eqFilters[index].gain.value = value;
+                    }
+                }
+            });
+            
+            statusMessage.textContent = `Preset aplicado: ${presetName}`;
+        }
+        
+        // Alternar ecualizador
+        function toggleEq() {
+            if (!audioContext) {
+                statusMessage.textContent = 'Error: Presiona Play ▶ primero para inicializar el AudioContext.';
+                return;
+            }
+
+            isEqActive = !isEqActive;
+            connectNodes();
+
+            if (isEqActive) {
+                statusMessage.textContent = 'Ecualizador activado';
+            } else {
+                statusMessage.textContent = 'Ecualizador desactivado (Bypass)';
+            }
+        }
+        
+        // Mapeo de frecuencias y Visualización
+        function getFrequencyIndex(freq) {
+            if (!audioContext || !bufferLength) return 0;
+            const nyquist = audioContext.sampleRate / 2;
+            const index = Math.round(freq / nyquist * bufferLength);
+            return Math.min(index, bufferLength - 1);
+        }
+        
+        function getFibonacciFrequencyIndices() {
+            return frequencies.map(freq => getFrequencyIndex(freq));
+        }
+        
+        function updateVisualization() {
+            if (analyser && videoPlayer.currentTime > 0) {
+                analyser.getByteFrequencyData(dataArray);
+            
+                canvasCtx.fillStyle = 'rgb(5, 5, 15)';
+                canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                switch (visualizationMode) {
+                    case 'bars': drawBarsVisualization(); break;
+                    case 'waveform': drawWaveformVisualization(); break;
+                    case 'circular': drawCircularVisualization(); break;
+                }
+            } else {
+                canvasCtx.fillStyle = 'rgb(5, 5, 15)';
+                canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            
+            requestAnimationFrame(updateVisualization);
+        }
+        
+        function drawBarsVisualization() {
+            const width = canvas.width;
+            const height = canvas.height;
+            const barWidth = (width / bufferLength) * 2.5;
+            let x = 0;
+            for (let i = 0; i < bufferLength; i++) {
+                const value = dataArray[i];
+                const percent = value / 256;
+                const barHeight = height * percent;
+                const hue = i / bufferLength * 360;
+                canvasCtx.fillStyle = `hsla(${hue}, 100%, 60%, 0.7)`;
+                canvasCtx.fillRect(x, height - barHeight, barWidth, barHeight);
+                x += barWidth + 1;
+            }
+            drawFibonacciMarkers();
+        }
+        
+        function drawWaveformVisualization() {
+            const width = canvas.width;
+            const height = canvas.height;
+            const centerY = height / 2;
+            canvasCtx.lineWidth = 2;
+            canvasCtx.strokeStyle = '#00d4ff';
+            canvasCtx.beginPath();
+            const sliceWidth = width / bufferLength;
+            let x = 0;
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0;
+                const y = v * centerY;
+                if (i === 0) {
+                    canvasCtx.moveTo(x, y);
+                } else {
+                    canvasCtx.lineTo(x, y);
+                }
+                x += sliceWidth;
+            }
+            canvasCtx.lineTo(width, centerY);
+            canvasCtx.stroke();
+            drawFibonacciMarkers();
+        }
+
+        function drawCircularVisualization() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(centerX, centerY) * 0.8;
+            canvasCtx.lineWidth = 2;
+            canvasCtx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            for (let i = 1; i <= 4; i++) {
+                canvasCtx.beginPath();
+                canvasCtx.arc(centerX, centerY, radius * (i / 4), 0, 2 * Math.PI);
+                canvasCtx.stroke();
+            }
+            const sliceAngle = (2 * Math.PI) / bufferLength;
+            for (let i = 0; i < bufferLength; i++) {
+                const amplitude = dataArray[i] / 256;
+                const barLength = amplitude * radius;
+                const angle = i * sliceAngle;
+                const x1 = centerX + Math.cos(angle) * (radius - barLength);
+                const y1 = centerY + Math.sin(angle) * (radius - barLength);
+                const x2 = centerX + Math.cos(angle) * radius;
+                const y2 = centerY + Math.sin(angle) * radius;
+                const hue = i / bufferLength * 360;
+                canvasCtx.strokeStyle = `hsla(${hue}, 100%, 60%, 0.7)`;
+                canvasCtx.beginPath();
+                canvasCtx.moveTo(x1, y1);
+                canvasCtx.lineTo(x2, y2);
+                canvasCtx.stroke();
+            }
+            drawFibonacciMarkersCircular(centerX, centerY, radius);
+        }
+        
+        function drawFibonacciMarkersCircular(centerX, centerY, radius) {
+            const fibIndices = getFibonacciFrequencyIndices();
+            const sliceAngle = (2 * Math.PI) / bufferLength;
+            fibIndices.forEach((index, i) => {
+                const angle = index * sliceAngle;
+                const amplitude = dataArray[index] / 256;
+                const barLength = amplitude * radius;
+                const x = centerX + Math.cos(angle) * (radius - barLength);
+                const y = centerY + Math.sin(angle) * (radius - barLength);
+                
+                canvasCtx.fillStyle = '#ff3bf2';
+                canvasCtx.beginPath();
+                canvasCtx.arc(x, y, 4, 0, 2 * Math.PI);
+                canvasCtx.fill();
+                
+                if (eqFilters[i]) {
+                    const gainValue = eqFilters[i].gain.value;
+                    canvasCtx.fillStyle = gainValue > 0 ? '#00ff00' : '#ff0000';
+                    canvasCtx.font = '10px Arial';
+                    const labelX = centerX + Math.cos(angle) * (radius + 15);
+                    const labelY = centerY + Math.sin(angle) * (radius + 15);
+                    canvasCtx.fillText(`${gainValue}dB`, labelX - 10, labelY);
+                }
+            });
+        }
+        
+        function drawFibonacciMarkers() {
+            const fibIndices = getFibonacciFrequencyIndices();
+            const height = canvas.height;
+            fibIndices.forEach((index, i) => {
+                const x = (index / bufferLength) * canvas.width;
+                const value = dataArray[index];
+                const barHeight = height * (value / 256);
+                
+                canvasCtx.strokeStyle = '#00d4ff';
+                canvasCtx.lineWidth = 2;
+                canvasCtx.beginPath();
+                canvasCtx.moveTo(x, height - barHeight);
+                canvasCtx.lineTo(x, height);
+                canvasCtx.stroke();
+                
+                canvasCtx.fillStyle = '#ff3bf2';
+                canvasCtx.beginPath();
+                canvasCtx.arc(x, height - barHeight, 4, 0, 2 * Math.PI);
+                canvasCtx.fill();
+                
+                if (eqFilters[i]) {
+                    const gainValue = eqFilters[i].gain.value;
+                    canvasCtx.fillStyle = gainValue > 0 ? '#00ff00' : '#ff0000';
+                    canvasCtx.font = '10px Arial';
+                    canvasCtx.fillText(`${gainValue}dB`, x - 10, height - barHeight - 10);
+                }
+            });
+        }
+
+        // Ajustar tamaño del canvas
+        function resizeCanvas() {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+        }
+        
+        // Formatear tiempo
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+        
+        // Actualizar barra de progreso
+        function updateProgress() {
+            const { currentTime, duration } = videoPlayer;
+            const progressPercent = (currentTime / duration) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            currentTimeEl.textContent = formatTime(currentTime);
+            
+            if (!isNaN(duration)) {
+                durationEl.textContent = formatTime(duration);
+            }
+        }
+        
+        // Cambiar modo de visualización
+        function setVisualizationMode(mode) {
+            visualizationMode = mode;
+            vizModeButtons.forEach(btn => {
+                if (btn.dataset.mode === mode) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            statusMessage.textContent = `Modo de visualización: ${mode}`;
+        }
+        
+        // Configurar event listeners
+        function setupEventListeners() {
+            
+            // Selector de preset
+            presetSelector.addEventListener('change', function() {
+                applyPreset(this.value);
+            });
+            
+            // Toggle ecualizador
+            eqToggle.addEventListener('change', toggleEq);
+            
+            // Botones de modo de visualización
+            vizModeButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    setVisualizationMode(this.dataset.mode);
+                });
+            });
+            
+            // Botones del reproductor
+            playBtn.addEventListener('click', () => {
+                // Inicializa el AudioContext al primer click
+                if (!audioContext) {
+                    setupAudioContext();
+                }
+
+                if (videoPlayer.paused) {
+                    videoPlayer.play().catch(e => {
+                        console.error("Error al intentar reproducir:", e);
+                        statusMessage.textContent = 'Error de reproducción. Asegura que el video cargue y permite la reproducción automática.';
+                    });
+                    playBtn.textContent = '⏸';
+                } else {
+                    videoPlayer.pause();
+                    playBtn.textContent = '▶';
+                }
+            });
+            
+            prevBtn.addEventListener('click', () => {
+                // Reiniciar el video
+                videoPlayer.currentTime = 0;
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                // Avanzar 10 segundos
+                videoPlayer.currentTime += 10;
+            });
+            
+            // Barra de progreso
+            progressContainer.addEventListener('click', (e) => {
+                const width = progressContainer.clientWidth;
+                const clickX = e.offsetX;
+                const duration = videoPlayer.duration;
+                if (!isNaN(duration)) {
+                    videoPlayer.currentTime = (clickX / width) * duration;
+                }
+            });
+            
+            // Control de volumen
+            volumeSlider.addEventListener('input', () => {
+                videoPlayer.volume = volumeSlider.value;
+            });
+            
+            // Toggle opciones avanzadas
+            advancedToggle.addEventListener('click', () => {
+                advancedOptions.classList.toggle('active');
+                advancedToggle.textContent = advancedOptions.classList.contains('active') 
+                    ? 'Ocultar Opciones' 
+                    : 'Opciones Avanzadas';
+            });
+            
+            // Eventos del video
+            videoPlayer.addEventListener('timeupdate', updateProgress);
+            
+            videoPlayer.addEventListener('loadedmetadata', () => {
+                if (!isNaN(videoPlayer.duration)) {
+                    durationEl.textContent = formatTime(videoPlayer.duration);
+                }
+            });
+            
+            videoPlayer.addEventListener('ended', () => {
+                playBtn.textContent = '▶';
+                progressBar.style.width = '0%';
+                currentTimeEl.textContent = '0:00';
+                statusMessage.textContent = 'Reproducción finalizada';
+            });
+            
+            videoPlayer.addEventListener('play', function() {
+                // Asegurar que el AudioContext está activo
+                if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                statusMessage.textContent = 'Reproduciendo...';
+            });
+            
+            videoPlayer.addEventListener('pause', function() {
+                statusMessage.textContent = 'Pausado';
+            });
+            
+            videoPlayer.addEventListener('error', function(e) {
+                console.error("Error del video:", e);
+                statusMessage.textContent = 'Error al cargar/reproducir el video. Verifique la URL y permisos CORS.';
+            });
+        }
+        
+        // Iniciar cuando el documento esté listo
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

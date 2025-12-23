@@ -1,0 +1,65 @@
+Revisión Técnica - Proyecto Backend (SuperAudio Server)
+Fecha: 2025-12-17
+
+1. Stack Tecnológico
+----------------------------------------
+- Runtime: Node.js (Version no definida, usa features ES6 modules).
+- Framework: Express v4.18.1.
+- Base de Datos (Caos Detectado):
+  - Drivers instalados para AMBOS: MySQL (`mysql2`, `mysql`) y PostgreSQL (`pg`).
+  - Configuración activa (`src/db.js`): MySQL configurado en puerto 8889 (típico de MAMP).
+  - Schema (`schema.sql`): PostgreSQL (usa sintaxis PL/PGSQL y tipos como `jsonb`).
+- Autenticación: JWT (`jsonwebtoken`) + BCrypt.
+- Utilidades: `dotenv`, `cors`, `helmet`, `nodemon`.
+
+2. Arquitectura y Funcionalidades
+----------------------------------------
+- Estructura: Intento de MVC (Model-View-Controller) pero desorganizado.
+- Rutas: Definidas en `src/routes/` y mapeadas en `index.js`.
+- Controladores: Lógica de negocio en `src/controllers/`.
+- Entry Point: `src/index.js` inicializa el servidor express en puerto 4344 (o env.PORT).
+- Middleware: Custom error handler y CORS (redundante, se aplica `cors()` y headers manuales).
+
+3. Análisis de Calidad
+----------------------------------------
+- Código Roto (Critical Bugs):
+  - El manejo de promesas de `mysql2` es incorrecto. `pool.query` retorna un array `[rows, fields]`.
+    - En `login.js`: `const rows = await pool.query(...)` asigna el array completo. `rows[0]` devuelve la LISTA de filas, no la primera fila. Acceder a `rows[0].passhash` resultará en crash o undefined.
+    - En `liked.js`: `rows.map(...)` fallará o producirá datos corruptos al iterar sobre la estructura de metadatos de MySQL.
+- Inconsistencia de Base de Datos:
+  - `controllers/liked/liked.js` mezcla sintaxis MySQL (`?`) con PostgreSQL (`$1`, `$2`, `public."Table"`) en el mismo archivo. Este código es inejecutable; fallará en runtime dependiendo de la query.
+- Archivos Basura y Mal Nombramiento:
+  - Carpetas con nombres poco profesionales: `methods` (debería ser `utils` o `services`).
+  - Typos en nombres de archivo: `genrateJwt.js` (generate).
+  - Comentarios de "supbase" indican una migración fallida o "copy-paste" sin criterio.
+  - `initDb.js` está completamente comentado y diseñado para Postgres, mientras la app corre en MySQL.
+
+4. Robustez y Seguridad
+----------------------------------------
+- Exposición de Secretos (CRÍTICO):
+  - Archivo `.env` commiteado en el repositorio con credenciales de base de datos (`ricu`/`123123`) y `TOKENKEY` hardcodeado.
+  - `schema.sql` contiene string de conexión a base de datos de producción (Railway).
+- Manejo de Errores:
+  - `initDb.js` (si se usara) y controllers tienen `console.log` dispersos.
+  - El middleware de error existe pero los controladores a menudo envían respuestas JSON manuales (`res.send({success: false})`) en lugar de pasar el error al middleware.
+- Conexiones Ineficientes:
+  - En cada request (ej. `liked.js`), se abre una conexión manual `pool.getConnection()`, se loguea "Conexión exitosa", y se libera inmediatamente SIN USARLA. Luego se usa `pool.query` directo. Esto añade latencia absurda.
+
+5. Estado de Testing
+----------------------------------------
+- Cobertura: 0%. Absolutamente inexistente.
+- No hay framework de testing instalado ni configurado.
+
+6. Evaluación de Prácticas
+----------------------------------------
+- Malas Prácticas Severas:
+  - Mezclar paradigmas de dos motores de base de datos distintos.
+  - No validar inputs de request body (en login solo chequea existencia, pero no tipo/longitud).
+  - Typos ortográficos en variables y comentarios (`courret`, `feilds`, `wronf`).
+  - Dejar código muerto masivo (`initDb.js`).
+- Buenas Prácticas (Intentos):
+  - Uso de Async/Await (estilo moderno), aunque la implementación de la librería DB sea incorrecta.
+  - Uso de `helmet` para seguridad básica de headers.
+
+DICTAMEN FINAL:
+El backend se encuentra en un estado funcionalmente ROTO e INCONSISTENTE. No es apto para despliegue ni desarrollo incremental. Requiere una reingeniería inmediata para decidir el motor de base de datos (MySQL vs Postgres), corregir todas las queries y sanear la arquitectura de conexión.

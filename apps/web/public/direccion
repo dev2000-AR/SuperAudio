@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SuperAudio - Evolución Diaria</title>
+  <style>
+    body {
+      background-color: #0A0A0A; /* Fondo más oscuro */
+      color: #FFFFFF;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #FFD700; /* Dorado */
+    }
+    .countdown {
+      text-align: center;
+      margin: 40px 0;
+    }
+    .countdown-circle {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 10px solid #FFD700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .improvements, .phases, .errors, .debt, .signatures {
+      margin-top: 40px;
+    }
+    .card {
+      background-color: #1E1E1E; /* Gris oscuro */
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      animation: slideIn 0.5s ease-in-out;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(0); }
+    }
+    .gold-check {
+      color: #FFD700;
+      font-weight: bold;
+    }
+    .progress-bar {
+      width: 100%;
+      background-color: #333;
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    .progress {
+      height: 10px;
+      background-color: #FFD700;
+      width: 0;
+      animation: fillProgress 2s forwards;
+    }
+    @keyframes fillProgress {
+      to { width: var(--progress); }
+    }
+    .signature-form {
+      background-color: #1E1E1E;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .signature-form textarea {
+      width: 100%;
+      height: 100px;
+      background-color: #333;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    .signature-form button {
+      background-color: #FFD700;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .signature-form button:hover {
+      background-color: #FFC700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>SuperAudio - Evolución Diaria</h1>
+    <h2>Plataforma gratuita en Argentina con soporte de sponsors</h2>
+
+    <!-- Cuenta Regresiva -->
+    <div class="countdown">
+      <div class="countdown-circle">
+        <span id="days">XXX días restantes</span>
+      </div>
+      <p>Inicio: 1 de octubre de 2024 | Fin: 14 de febrero de 2025</p>
+      <p class="gold-check">20 de enero: Presentación de preproducción de interfaz</p>
+    </div>
+
+    <!-- Mejoras Diarias -->
+    <div class="improvements">
+      <h2>Mejoras de Ayer</h2>
+      <div class="card">Cambio de puertos para API de MySQL</div>
+      <div class="card">Descubrimiento de fallo grave que cerraba el servidor virtual</div>
+      <div class="card">Reestructuración de playlists y creación de playlists</div>
+      <div class="card">Apertura de lista actual y armado de lista con arrastre</div>
+      <div class="card">Reestructuración de códigos de apertura a MySQL por PM2</div>
+      <div class="card">Apertura de canales de errores vía web</div>
+      <div class="card">Apertura de informes diarios y de mejorías</div>
+    </div>
+
+    <!-- Fases del Proyecto -->
+    <div class="phases">
+      <h2>Fases del Proyecto</h2>
+      <div class="card">
+        <h3>Backend</h3>
+        <ul>
+          <li>Base de datos terminado.</li>
+          <li>Automatizador descargador de tracks hecho.</li>
+          <li>Codificador de tracks con robot y uploading hecho.</li>
+          <li>Modificador de imágenes de perfil de artistas hecho.</li>
+          <li>Base de datos usuario en desarrollo.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Interfaz</h3>
+        <ul>
+          <li>Desarrollando al 70%.</li>
+          <li>Métodos de pagos al finalizar interfaz (19 de enero).</li>
+          <li>Perfil del usuario pendiente (16 de enero).</li>
+          <li>Manejo de correos electrónicos y mensajes de texto pendiente (17 de enero).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Estadísticas y Seguridad</h3>
+        <ul>
+          <li>Desarrollo de estadísticas del usuario en progreso.</li>
+          <li>Testing de metodologías de seguridad y requisitos de W3C a cargo del programador.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Depuración y Uploading</h3>
+        <ul>
+          <li>Depurando errores.</li>
+          <li>Puesta de uploading de tracks de 400,000 a 2,500,000 cada 24 hs a partir del 20 de enero.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Errores y Depuraciones -->
+    <div class="errors">
+      <h2>Errores y Depuraciones</h2>
+      <div class="card">
+        <p><strong>Falla grave en PlayNow y lista actual:</strong> Se muestra en blanco.</p>
+        <p><strong>Reparación en progreso.</strong></p>
+      </div>
+      <div class="card">
+        <p><strong>Tracks subidos hoy:</strong> 440 aproximadamente.</p>
+      </div>
+    </div>
+
+    <!-- Deudas y Pagos -->
+    <div class="debt">
+      <h2>Deudas y Pagos</h2>
+      <div class="card">
+        <p><strong>Deuda del programador:</strong></p>
+        <ul>
+          <li>Total: 1200 USD</li>
+          <li>Pagado: 570 USD</li>
+          <li>Pendiente: 300 USD</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Formulario de Firmas y Comentarios -->
+    <div class="signatures">
+      <h2>Registro de Directivos</h2>
+      <div class="signature-form">
+        <p><strong>Directivos:</strong></p>
+        <ul>
+          <li>Cesar Giancrisostemi</li>
+          <li>Carlos Jeambeau</li>
+          <li>Alejandro Diviasi</li>
+        </ul>
+        <textarea id="comments" placeholder="Deja tus comentarios aquí..."></textarea>
+        <button onclick="saveSignatures()">Guardar Firmas y Comentarios</button>
+        <p id="message" style="color: #FFD700; margin-top: 10px;"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Cálculo de días restantes
+    const startDate = new Date('2024-10-01');
+    const endDate = new Date('2025-02-14');
+    const today = new Date();
+    const daysRemaining = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+    document.getElementById('days').textContent = `${daysRemaining} días restantes`;
+
+    // Guardar firmas y comentarios
+    function saveSignatures() {
+      const comments = document.getElementById('comments').value;
+      const date = new Date().toLocaleDateString();
+      const data = `Fecha: ${date}\nComentarios:\n${comments}\n\n`;
+
+      // Guardar en un archivo .txt
+      const blob = new Blob([data], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `firmas_${date.replace(/\//g, '-')}.txt`;
+      a.click();
+
+      document.getElementById('message').textContent = "Firmas y comentarios guardados.";
+    }
+  </script>
+</body>
+</html>

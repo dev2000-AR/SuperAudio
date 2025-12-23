@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de Integridad de Audio</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #333;
+            margin-bottom: 30px;
+        }
+
+        .timestamp {
+            font-size: 0.8em;
+            color: #666;
+            text-align: right;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .format-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .format-card h2 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .spectrogram {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .metrics {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .metrics div {
+            margin: 5px 0;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .comparison {
+            grid-column: 1 / -1;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Análisis de Integridad de Audio</h1>
+        <div class="timestamp">Fecha de análisis: 2025-04-04 15:00:28 UTC</div>
+    </div>
+
+    <div class="analysis-grid">
+        <!-- FLAC Analysis -->
+        <div class="format-card">
+            <h2>FLAC (Super Audio)</h2>
+            <img src="spectro/01_flac_spectrogram.png" alt="FLAC Spectrogram" class="spectrogram">
+            <div class="metrics">
+                <div><span class="label">Formato:</span> FLAC</div>
+                <div id="flac-metrics">
+                    <!-- Metrics will be populated via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- MP3 Analysis -->
+        <div class="format-card">
+            <h2>MP3 (YouTube Premium)</h2>
+            <img src="spectro/01_yt_premium_spectrogram.png" alt="MP3 Spectrogram" class="spectrogram">
+            <div class="metrics">
+                <div><span class="label">Formato:</span> MP3</div>
+                <div id="mp3-metrics">
+                    <!-- Metrics will be populated via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- MP4 Analysis -->
+        <div class="format-card">
+            <h2>MP4 (Spotify HQ)</h2>
+            <img src="spectro/01_spotify_hq_spectrogram.png" alt="MP4 Spectrogram" class="spectrogram">
+            <div class="metrics">
+                <div><span class="label">Formato:</span> MP4 Audio</div>
+                <div id="mp4-metrics">
+                    <!-- Metrics will be populated via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Section -->
+        <div class="comparison">
+            <h2>Análisis Comparativo</h2>
+            <div id="comparison-results">
+                <!-- Comparison results will be populated via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para cargar los reportes
+        async function loadReports() {
+            try {
+                const flacResponse = await fetch('reporte_flac.txt');
+                const mp3Response = await fetch('reporte_mp3.txt');
+                const spotifyResponse = await fetch('reporte_spotify.txt');
+
+                const flacText = await flacResponse.text();
+                const mp3Text = await mp3Response.text();
+                const spotifyText = await spotifyResponse.text();
+
+                // Procesar y mostrar la información de cada formato
+                document.getElementById('flac-metrics').innerHTML = processReport(flacText, 'FLAC');
+                document.getElementById('mp3-metrics').innerHTML = processReport(mp3Text, 'MP3');
+                document.getElementById('mp4-metrics').innerHTML = processReport(spotifyText, 'MP4');
+
+                // Generar comparación
+                generateComparison(flacText, mp3Text, spotifyText);
+            } catch (error) {
+                console.error('Error loading reports:', error);
+            }
+        }
+
+        // Función para procesar el reporte
+        function processReport(reportText, format) {
+            const lines = reportText.split('\n');
+            let html = '';
+            
+            // Extraer información relevante
+            const relevantInfo = {
+                'Bit rate': '',
+                'Sample rate': '',
+                'Channels': '',
+                'Duration': ''
+            };
+
+            lines.forEach(line => {
+                for (const key in relevantInfo) {
+                    if (line.toLowerCase().includes(key.toLowerCase())) {
+                        relevantInfo[key] = line.split('=')[1];
+                        html += `<div><span class="label">${key}:</span> ${relevantInfo[key]}</div>`;
+                    }
+                }
+            });
+
+            return html;
+        }
+
+        // Función para generar comparación
+        function generateComparison(flac, mp3, spotify) {
+            const comparisonDiv = document.getElementById('comparison-results');
+            comparisonDiv.innerHTML = `
+                <p>Análisis comparativo de calidad:</p>
+                <ul>
+                    <li>FLAC mantiene la calidad original sin pérdidas</li>
+                    <li>MP3 (YouTube Premium) muestra compresión con pérdidas controladas</li>
+                    <li>MP4 (Spotify HQ) presenta balance entre calidad y tamaño</li>
+                </ul>
+            `;
+        }
+
+        // Cargar los reportes cuando la página se cargue
+        window.onload = loadReports;
+    </script>
+</body>
+</html>

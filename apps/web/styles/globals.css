@@ -1,0 +1,1063 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "ProximaNova Regular";
+  src: url("/ProximaNova/iiold.otf?");
+}
+
+@font-face {
+  font-family: "ProximaNova Bold";
+  src: url("/ProximaNova/iiold.otf?");
+}
+
+@font-face {
+  font-family: "iiold";
+  src: url("/ProximaNova/iiold.otf?");
+}
+
+@font-face {
+  font-family: "sup-icons";
+  src: url("/sup-icons.ttf?x716ww") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.newprofilimgcenter {
+  width: 155px;
+  height: 155px;
+  float: left;
+  position: relative;
+  border: 5px solid #00b0fa;
+  z-index: -9999;
+  margin-top: -100px;
+}
+
+* {
+  font-weight: 400 !important;
+}
+
+.displaynone {
+  display: none !important;
+}
+
+.vhid {
+  visibility: hidden !important;
+}
+
+.text-\[\#2bb540\] {
+  color: rgb(0, 176, 250) !important;
+}
+
+.bg-\[\#2bb540\] {
+  background-color: rgb(0, 176, 250) !important;
+  transition: 0.5s;
+}
+
+i {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "sup-icons" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  font-size: 22px;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.futuristic-gradient {
+  background: linear-gradient(135deg, #000000 0%, #004c89 40%, #009cde 100%);
+  position: relative;
+}
+
+.futuristic-gradient::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 156, 222, 0.4) 10%, transparent 70%);
+  animation: moveGlow 4s infinite linear;
+  animation-iteration-count: 1;
+}
+
+@keyframes moveGlow {
+  0% {
+    transform: translate(-50%, -50%);
+  }
+
+  100% {
+    transform: translate(50%, 50%);
+  }
+}
+
+.icon-heart-o:before {
+  content: "\e923";
+}
+
+.icon-heart:before {
+  content: "\e924";
+}
+
+.icon-pause:before {
+  content: "\e920";
+}
+
+.icon-play:before {
+  content: "\e921";
+}
+
+.icon-chevron-down:before {
+  content: "\e922";
+}
+
+.icon-close:before {
+  content: "\e91e";
+}
+
+.icon-more-vertical:before {
+  content: "\e90b";
+}
+
+.icon-more-horizontal:before {
+  content: "\e90d";
+}
+
+.icon-volume-x:before {
+  content: "\e907";
+}
+
+.icon-volume-1:before {
+  content: "\e91d";
+}
+
+.icon-volume-2:before {
+  content: "\e91f";
+}
+
+.icon-about:before {
+  content: "\e908";
+}
+
+.icon-add-to-playlist:before {
+  content: "\e909";
+}
+
+.icon-add-to-queue:before {
+  content: "\e90a";
+}
+
+.icon-full-screen:before {
+  content: "\e90c";
+}
+
+.icon-hide-song:before {
+  content: "\e90e";
+}
+
+.icon-Like:before {
+  content: "\e90f";
+}
+
+.icon-lyrics:before {
+  content: "\e910";
+}
+
+.icon-Next:before {
+  content: "\e911";
+}
+
+.icon-Previous:before {
+  content: "\e913";
+}
+
+.icon-queue:before {
+  content: "\e914";
+}
+
+.icon-repeat:before {
+  content: "\e915";
+}
+
+.icon-share:before {
+  content: "\e917";
+}
+
+.icon-shuffle:before {
+  content: "\e918";
+}
+
+.icon-sleep-timer:before {
+  content: "\e919";
+}
+
+.icon-view-album:before {
+  content: "\e91b";
+}
+
+.icon-view-artist:before {
+  content: "\e91c";
+}
+
+.icon-create_new:before {
+  content: "\e900";
+  color: #fff;
+}
+
+.icon-home-filled:before {
+  content: "\e901";
+  color: #fff;
+}
+
+.icon-home:before {
+  content: "\e902";
+  color: #fff;
+}
+
+.icon-library-filled:before {
+  content: "\e903";
+  color: #fff;
+}
+
+.icon-library:before {
+  content: "\e904";
+  color: #fff;
+}
+
+.icon-search-filled:before {
+  content: "\e905";
+  color: #fff;
+}
+
+.icon-search:before {
+  content: "\e906";
+}
+
+.icon-download:before {
+  content: "\e912";
+}
+
+.icon-verified:before {
+  content: "\e91a";
+}
+
+.icon-arrow_back:before {
+  content: "\e916";
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  height: 0.3rem;
+  border-radius: 20px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  display: hidden;
+}
+
+input[type="range"]:hover::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+
+  background-color: #fff;
+  height: 0.6rem;
+  width: 0.6rem;
+  border-radius: 50%;
+}
+
+.noDrag {
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+* {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.loader2 {
+  width: 100px;
+  /* Ajusta el tamaño según necesites */
+  height: 40px;
+  /* Ajusta el tamaño según necesites */
+  background-image: url('https://superaudio.online/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  animation: moveLeftToRight 2s linear infinite, vibrate 0.3s ease-in-out infinite, fadeInOut 2s ease-in-out infinite;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+  /* Sombra minimalista */
+}
+
+@keyframes moveLeftToRight {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  50% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes vibrate {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-2px);
+  }
+
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes fadeInOut {
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #7d7d7d;
+  border-radius: 100vh;
+  border: 3px solid #333333;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #c0a0b9;
+}
+
+.cliped {
+  clip-path: polygon(59% 0,
+      49% 100%,
+      100% 30%,
+      0 100%,
+      100% 0,
+      0 66%,
+      0 37%,
+      100% 80%,
+      0 0,
+      100% 20%,
+      80% 0%,
+      87% 100%);
+  transform: rotate(190deg);
+}
+
+.inline-loader {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: block;
+  margin: 8px auto;
+  position: relative;
+  background: #fff;
+  box-shadow: -20px 0 #fff, 20px 0 #fff;
+  box-sizing: border-box;
+  animation: shadowPulse 1s linear infinite;
+}
+
+@keyframes shadowPulse {
+  33% {
+    background: #fff;
+    box-shadow: -20px 0 #2bb540, 20px 0 #fff;
+  }
+
+  66% {
+    background: #2bb540;
+    box-shadow: -20px 0 #fff, 20px 0 #fff;
+  }
+
+  100% {
+    background: #fff;
+    box-shadow: -20px 0 #fff, 20px 0 #2bb540;
+  }
+}
+
+.all-search {
+  width: 100%;
+}
+
+.all-search1 {
+  padding: 1rem;
+  /* py-4 */
+  padding-left: 1.5rem;
+  /* px-6 */
+  padding-right: 1.5rem;
+  /* px-6 */
+  position: fixed;
+  z-index: 40;
+  background-color: #121212;
+  display: flex;
+  width: 100%;
+  align-items: left;
+}
+
+.all-search2 {
+  display: flex;
+  background-color: white;
+  border-radius: 1.5rem;
+  /* rounded-3xl */
+  padding-left: 1rem;
+  /* px-4 */
+  width: 100%;
+}
+
+.all-searchicon {
+  color: #6b7280;
+  /* text-gray-500 */
+  padding-top: 0.5rem;
+  /* py2 */
+  padding-bottom: 0.5rem;
+  /* py2 */
+}
+
+.all-searchinput {
+  width: 100%;
+  padding-left: 0.5rem;
+  /* px-2 */
+  padding-right: 0.5rem;
+  /* px-2 */
+  padding-top: 0.5rem;
+  /* py-2 */
+  padding-bottom: 0.5rem;
+  /* py-2 */
+  color: black;
+  border: none;
+  outline: none;
+  border-radius: 1.5rem;
+  /* rounded-3xl */
+}
+
+.all-search-noresults {
+  width: 100%;
+  text-align: center;
+  padding-top: 12.5rem !important;
+  /* pt-10 */
+}
+
+/* Estilos para escritorio (media queries) */
+@media (min-width: 768px) {
+  .all-search1 {
+    padding: 1.5rem;
+    /* Ajusta el padding para pantallas más grandes */
+  }
+
+  .all-search2 {
+    max-width: 600px;
+    /* Limita el ancho del campo de búsqueda en pantallas grandes */
+    margin: 10px;
+    /* Centra el campo de búsqueda */
+  }
+
+  .all-searchinput {
+    font-size: 1.125rem;
+    /* Ajusta el tamaño de la fuente para pantallas grandes */
+  }
+
+  .all-search-noresults {
+    font-size: 1.25rem;
+    /* Ajusta el tamaño de la fuente para pantallas grandes */
+  }
+}
+
+@keyframes scrollBackground {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.bg-moving-dark {
+  background: url("https://superaudio.online/screenshots/0.png") repeat-x;
+  background-size: cover;
+  animation: scrollBackground 30s linear infinite;
+  filter: brightness(0.5);
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.active-track {
+  animation: blink 6.5s infinite;
+  color: #00ffff;
+  /* Color cian */
+}
+
+.trackitem-cover {
+  position: relative;
+  display: inline-block;
+}
+
+.trackitem-coverurl {
+  border-radius: 8px;
+  /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Sombra */
+}
+
+.active-track .trackitem-coverurl {
+  animation: blink 1.5s infinite;
+}
+
+.active-track .trackitem-cover::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  background-image: url('/logo.png');
+  background-size: cover;
+  animation: blink 1.5s infinite;
+}
+
+.trackitem-number {
+  width: 20px;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trackitem-cover {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  text-align: left;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientAnimation 10s ease infinite;
+}
+
+
+
+.imgsearchl.select-none.noDrag {
+  height: 100% !important;
+  width: 100% !important;
+  object-fit: cover;
+}
+
+.theartisproject {
+  background: #000;
+  width: 250px;
+  height: 300px;
+}
+
+.custint .track-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custint .track-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.search-container,
+.search-bar,
+.search-results,
+.track-item,
+.artists-list {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+
+  .track-item,
+  .theartisproject {
+    width: 100%;
+  }
+}
+
+.barmusichome {
+  background: linear-gradient(90deg, rgba(25, 25, 25, 0.97) 0%, rgba(35, 35, 35, 0.97) 100%);
+  backdrop-filter: blur(10px);
+  padding-top: 20px;
+}
+
+/* Estilos para el EQ 13 Bandas */
+.eq-13-bandas {
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  margin: 1rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: white;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  width: 350px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: top right;
+}
+
+/* Estado activo con sombra destacada */
+.eq-13-bandas.active {
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 2px rgba(0, 212, 255, 0.3),
+    0 0 20px rgba(0, 212, 255, 0.2);
+  border-color: rgba(0, 212, 255, 0.4);
+}
+
+/* Estado inactivo */
+.eq-13-bandas.inactive {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  opacity: 0.7;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Estados de animación */
+.eq-13-bandas.fade-in {
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.eq-13-bandas.fade-out {
+  animation: fadeOutDown 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+}
+
+/* Clases de utilidad */
+.eq-13-bandas .flex {
+  display: flex;
+}
+
+.eq-13-bandas .items-center {
+  align-items: center;
+}
+
+.eq-13-bandas .justify-between {
+  justify-content: space-between;
+}
+
+.eq-13-bandas .mb-4 {
+  margin-bottom: 1rem;
+}
+
+.eq-13-bandas .text-white {
+  color: white;
+}
+
+.eq-13-bandas .font-semibold {
+  font-weight: 600;
+}
+
+.eq-13-bandas .text-gray-400 {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.eq-13-bandas .text-sm {
+  font-size: 0.875rem;
+}
+
+/* Indicador de estado del módulo */
+.module-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.module-status.active {
+  background: rgba(0, 212, 255, 0.15);
+  color: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.module-status.inactive {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.module-status.active .status-dot {
+  background: #00d4ff;
+  box-shadow: 0 0 6px rgba(0, 212, 255, 0.8);
+}
+
+.module-status.inactive .status-dot {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Botones */
+.eq-toggle-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.eq-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.eq-toggle-btn:active {
+  transform: translateY(0);
+}
+
+/* Sliders verticales para desktop */
+.band-slider {
+  -webkit-appearance: slider-vertical;
+  writing-mode: bt-lr;
+  width: 100%;
+  height: 96px;
+  background: transparent;
+  outline: none;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.band-slider:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.band-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #00d4ff;
+  cursor: pointer;
+  border: 2px solid #000;
+  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.4);
+  transition: all 0.2s ease;
+}
+
+.band-slider::-webkit-slider-thumb:hover {
+  background: #00fffb;
+  box-shadow: 0 3px 12px rgba(0, 212, 255, 0.6);
+  transform: scale(1.1);
+}
+
+.band-slider::-webkit-slider-track {
+  width: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Grid para desktop */
+.grid-cols-13 {
+  display: grid;
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Contenedor para sliders horizontales en móvil */
+.bands-horizontal-container {
+  display: none;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 212, 255, 0.3) transparent;
+}
+
+.bands-horizontal-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.bands-horizontal-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.bands-horizontal-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 255, 0.3);
+  border-radius: 3px;
+}
+
+.bands-horizontal-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 212, 255, 0.5);
+}
+
+.bands-horizontal-wrapper {
+  display: flex;
+  gap: 1rem;
+  padding: 0 0.25rem;
+  min-width: max-content;
+}
+
+/* Sliders horizontales para móvil */
+.band-slider-horizontal {
+  -webkit-appearance: none;
+  width: 80px;
+  height: 20px;
+  background: transparent;
+  outline: none;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  transform: rotate(0deg);
+}
+
+.band-slider-horizontal:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.band-slider-horizontal::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #00d4ff;
+  cursor: pointer;
+  border: 2px solid #000;
+  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.4);
+  transition: all 0.2s ease;
+}
+
+.band-slider-horizontal::-webkit-slider-thumb:hover {
+  background: #00fffb;
+  box-shadow: 0 3px 12px rgba(0, 212, 255, 0.6);
+}
+
+.band-slider-horizontal::-webkit-slider-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Etiquetas de frecuencia */
+.freq-label {
+  font-size: 0.7rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .eq-13-bandas {
+    width: 320px;
+    top: 15px;
+    right: 10px;
+    padding: 1.25rem;
+  }
+
+  /* Ocultar grid vertical y mostrar contenedor horizontal */
+  .grid-cols-13 {
+    display: none !important;
+  }
+
+  .bands-horizontal-container {
+    display: block;
+  }
+
+  .band-slider {
+    height: 80px;
+  }
+
+  .module-status {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+  }
+
+  .eq-toggle-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .eq-13-bandas {
+    width: 300px;
+    padding: 1rem;
+    top: 10px;
+    right: 10px;
+  }
+
+  .bands-horizontal-wrapper {
+    gap: 0.75rem;
+  }
+
+  .band-slider-horizontal {
+    width: 70px;
+  }
+
+  .freq-label {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .eq-13-bandas {
+    width: 280px;
+    right: 5px;
+    top: 10px;
+  }
+
+  .bands-horizontal-wrapper {
+    gap: 0.6rem;
+  }
+
+  .band-slider-horizontal {
+    width: 65px;
+  }
+}
+
+/* Efectos de transición suaves para todos los elementos */
+.eq-13-bandas * {
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Estado minimizado */
+.eq-13-bandas.minimized {
+  transform: scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Botón de cerrar con animación */
+.close-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(90deg);
+}

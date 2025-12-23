@@ -1,0 +1,74 @@
+Revisión Técnica - Proyecto web2 (SuperAudio Frontend)
+Fecha: 2025-12-17
+
+1. Stack Tecnológico
+----------------------------------------
+- Core: Next.js v12.3.1 (Versión antigua), React v18.2.0.
+- Lenguaje: TypeScript v4.8.4.
+- Estado Global: Redux Toolkit (@reduxjs/toolkit v1.8.6), React-Redux.
+- Estilos: Tailwind CSS v3.1.8, PostCSS, Framer Motion v12.
+- Dependencias Clave: 
+  - axios (Peticiones HTTP)
+  - algoliasearch (Motor de búsqueda)
+  - react-toastify (Notificaciones UI)
+  - react-beautiful-dnd (Drag & Drop)
+  - nextjs-progressbar (Indicador de carga)
+
+2. Arquitectura y Funcionalidades
+----------------------------------------
+- Estructura: Router basado en sistema de archivos ("Pages Router" de Next.js).
+- Punto de Entrada: "pages/_app.tsx" actúa como wrapper global, inyectando el Provider de Redux, GTM (Google Tag Manager) y el componente persistente AudioPlayer.
+- Organización:
+  - "components/": Contiene la UI reusables, aunque con baja cohesión.
+  - "stores/": Configuración de Redux slices (auth, player, homePage).
+  - "layouts/": Existe pero está subutilizada; páginas como "leg1.tsx" reimplementan la navegación manualmente.
+- Rutas API: "pages/api/" contiene endpoints básicos ("hello.ts", "vs.js") que parecen placeholders.
+
+3. Análisis de Calidad
+----------------------------------------
+- Código Duplicado y Redundante:
+  - "stores/store2.ts": Duplicado exacto de "store.ts".
+  - "components/EQ13Bandas.tsx2": Archivo de respaldo commiteado erróneamente.
+  - "components/_app.tsx": Versión divergente y no utilizada de la app principal (parece código legacy del proyecto original "Musive").
+- Archivos Basura (Bloatware):
+  - Carpeta "di/": Contiene videos pesados (.mp4) no relacionados con el código fuente.
+  - Carpeta "cuestionario/": Proyecto HTML estático ajeno a la estructura Next.js.
+  - Carpeta "t/": Contiene un "node_modules" anidado inexplicable.
+  - "pages/out.mp4": Archivo binario en rutas de aplicación.
+  - "next.config.jsy" y "package-lock.js": Archivos con extensiones erróneas/backups.
+- Nombramiento Deficiente:
+  - "pages/leg1.tsx": Nombre críptico para la página de Términos y Condiciones.
+  - "pages/api/vs.js": Nombre poco descriptivo para un endpoint de versión.
+
+4. Robustez y Seguridad
+----------------------------------------
+- Exposición de Secretos: CRÍTICO.
+  - "next.config.jsy" contiene ALGOLIA_API_KEY hardcodeada.
+  - "pages/_app.tsx" expone IDs de GTM directamente en el código cliente.
+- Manejo de Errores:
+  - Ausencia generalizada de límites de error (Error Boundaries) explícitos en componentes clave.
+  - Lógica frágil en "_app.tsx" (líneas 115-148) para ocultar el reproductor basada en una lista manual de rutas strings, propensa a fallos si las rutas cambian.
+- Datos Hardcodeados:
+  - Emails personales (ej. "xear.div@yahoo.com" en leg1.tsx) en lugar de configuraciones o variables de entorno.
+  - Referencias a la empresa "Grupo Stars Tres Corp" inconsistentes.
+
+5. Estado de Testing
+----------------------------------------
+- Cobertura: 0%. Inexistente.
+- Infraestructura: No se detectaron archivos de test (.test.tsx, .spec.js) ni scripts de prueba configurados en "package.json".
+
+6. Evaluación de Prácticas
+----------------------------------------
+- Malas Prácticas Detectadas:
+  - Commitear archivos de backup, binarios grandes y carpetas temporales ("di", "t").
+  - Copiar y pegar código completo de otros proyectos sin limpieza (referencias a "Musive" y "musive-icons.ttf").
+  - Estilos Inline y mezcla inconsistente de CSS Modules con Tailwind.
+  - Comentarios de código muerto extensos.
+- Buenas Prácticas:
+  - Uso de TypeScript para tipado estático (aunque no estricto en todos lados).
+  - Implementación de feedback de carga con "nextjs-progressbar".
+
+7. Advertencias de Migración
+----------------------------------------
+- El proyecto presenta indicios claros de ser un fork o copia de un proyecto llamado "Musive". Existen referencias a assets inexistentes en la versión "web2".
+- Antes de iniciar desarrollo, se requiere una limpieza profunda ("Housekeeping") para eliminar los gigabytes potenciales de archivos basura en "di" y "t" que inflan el repositorio.
