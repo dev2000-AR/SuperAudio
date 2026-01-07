@@ -73,4 +73,14 @@ Este documento registra los obstáculos técnicos encontrados durante el desplie
     ```
 - **Causa**: TypeScript detecta que el componente `HorizontalAlbumCard` está devolviendo un tipo `Element` que entra en conflicto con las expectativas de React 18, y lanza un error de tipos porque la `key` (que es un `number`) no coincide exactamente con el tipo `string` esperado en este contexto estricto.
 - **Solución**: Convertir la `key` a `string` explícitamente usando `.toString()` y definir el tipo de retorno del componente como `JSX.Element`.
-- **Estado**: Corregido.
+- **Estado**: Corregido (Commit `465d79a`).
+
+---
+
+## 5. Persistencia de Error de Tipos en JSX (Conflictos de Versión)
+
+- **Archivo**: `apps/web/components/HorizontalAlbumList.tsx`
+- **Error**: `'HorizontalAlbumCard' cannot be used as a JSX component. Its return type 'ReactElement<any, any> | null' is not a valid JSX element.`
+- **Causa**: Un conflicto interno entre versiones de `@types/react` en el entorno de Vercel hace que TypeScript no reconozca los componentes funcionales estándar como válidos si el tipo de retorno no coincide exactamente con la versión global de React. Es un error común en monorepos con dependencias duplicadas.
+- **Solución**: Refactorizar el componente a una forma más simple y, si persiste, forzar el tipo en el punto de uso para saltar la validación estricta que bloquea el build.
+- **Estado**: En proceso.
