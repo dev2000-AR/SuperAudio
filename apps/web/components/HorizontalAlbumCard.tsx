@@ -8,14 +8,14 @@ function HorizontalAlbumCard({
 }: {
   album: Album;
   onClick: () => void;
-}) {
+}): JSX.Element {
   // Función para generar una URL de imagen basada en el creid
-  const getAlbumImageUrl = (artist_id: string,creid: string) => {
+  const getAlbumImageUrl = (artist_id: string, creid: string) => {
     return `https://dig0ubfhli3b0.cloudfront.net/cdn1/music/${artist_id}/${creid}/front.jpg`; // Ajusta esta URL según tu configuración
   };
 
   return (
-    <div key={album.idcre} className="mr-4 cursor-pointer" onClick={onClick}>
+    <div className="mr-4 cursor-pointer" onClick={onClick}>
       <div
         className="p-4 bg-gradient-to-t from-[#2c2a2a4a] to-[#2c2a2ac7] hover:bg-[#4340409d]
            tablet:hover:bg-transparent mobile:hover:bg-transparent
@@ -32,7 +32,7 @@ function HorizontalAlbumCard({
           tablet:w-[130px] tablet:h-[130px] mobile:w-[100px] mobile:h-[100px]"
         >
           <CustomImage
-            src={getAlbumImageUrl(album.artist_id,album.creid)}
+            src={getAlbumImageUrl(album.artist_id, album.creid)}
             className="rounded-full"
           />
         </div>

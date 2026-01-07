@@ -14,7 +14,7 @@ function HorizontalAlbumList({ album }: { album: Album[] }) {
       <div className="mx-4 mobile:mx-2 tablet:mx-3 mini-laptop:mx-2"></div>
       {album.map((album: Album) => (
         <HorizontalAlbumCard
-          key={album.idcre}
+          key={album.idcre.toString()}
           album={album}
           onClick={() => router.push(`/album/${album.idcre}`)}
         />
