@@ -18,7 +18,6 @@ function HorizontalTrackCard({
 
   return (
     <div
-      key={track.id}
       className="mr-4 cursor-grab select-none"
       onClick={onClick}
       onMouseEnter={() => setPlayButton(true)}
@@ -102,7 +101,7 @@ export function PlayPauseButton({
   return (
     <div>
       {condition && (
-        <div 
+        <div
           className="absolute w-full h-full bg-black bg-opacity-10 z-10 
             flex justify-end items-end rounded-md"
         >

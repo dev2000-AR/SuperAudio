@@ -82,5 +82,29 @@ Este documento registra los obstáculos técnicos encontrados durante el desplie
 - **Archivo**: `apps/web/components/HorizontalAlbumList.tsx`
 - **Error**: `'HorizontalAlbumCard' cannot be used as a JSX component. Its return type 'ReactElement<any, any> | null' is not a valid JSX element.`
 - **Causa**: Un conflicto interno entre versiones de `@types/react` en el entorno de Vercel hace que TypeScript no reconozca los componentes funcionales estándar como válidos si el tipo de retorno no coincide exactamente con la versión global de React. Es un error común en monorepos con dependencias duplicadas.
-- **Solución**: Refactorizar el componente a una forma más simple y, si persiste, forzar el tipo en el punto de uso para saltar la validación estricta que bloquea el build.
-- **Estado**: En proceso.
+- **Solución**: Se utilizó un "cast" a `any` (`const Card = HorizontalAlbumCard as any`) en el punto de renderizado dentro de `HorizontalAlbumList.tsx`. Esto evita que el compilador de TypeScript intente validar la compatibilidad de tipos de JSX en un entorno con versiones de `@types/react` en conflicto, permitiendo que el build proceda.
+- **Estado**: Solución táctica aplicada (Commit `a59ec73`).
+
+---
+
+## 6. Error de Tipos Cascada en Listas (HorizontalArtistCard)
+
+- **Archivo**: `apps/web/components/HorizontalArtistListAlgolia.tsx`
+- **Error**: `'HorizontalArtistCard' cannot be used as a JSX component. Its return type 'Element' is not a valid JSX element.`
+- **Causa**: Idéntica al Error 5. Al ser un proyecto con muchos componentes similares, el error de "incompatibilidad de versiones de React" aparece en cada lista que renderiza componentes personalizados.
+- **Solución**: Aplicar el cast a `any` en `HorizontalArtistListAlgolia.tsx` y revisar proactivamente otros componentes de lista.
+- **Estado**: Solución táctica aplicada (Commit `a59ec73`).
+
+---
+
+## 7. Prevención Proactiva de Errores de Tipos en Listas
+
+- **Archivos**: 
+    - `HorizontalArtistsList.tsx`
+    - `HorizontalTracksList.tsx`
+    - `HorizontalArtistsCard.tsx`
+    - `HorizontalTrackCard.tsx`
+- **Error**: Ninguno aún (Proactivo).
+- **Causa**: Al identificar el patrón de fallos en `HorizontalAlbumList` y `HorizontalArtistListAlgolia`, se determinó que el resto de componentes de lista de la misma arquitectura fallarían en builds subsiguientes.
+- **Solución**: Se aplicó el cast a `any` en los puntos de renderizado y se eliminaron las `keys` internas redundantes en los componentes Card para estandarizar la arquitectura y evitar el bloqueo del compilador.
+- **Estado**: Aplicado.

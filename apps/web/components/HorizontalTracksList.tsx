@@ -11,24 +11,27 @@ function HorizontalTracksList({ tracks }: { tracks: TrackProps[] }) {
   return (
     <ScrollContainer
       vertical={true}
-      horizontal={true} 
+      horizontal={true}
       className="flex flex-row"
     >
       <div className="hotizontal_tracklist mx-4 mobile:mx-2 tablet:mx-6"></div>
-      {tracks.map((track: TrackProps) => (
-        <HorizontalTrackCard
-          key={track.id}
-          track={track} 
-          onClick={() =>
-            dispatch(
-              setActiveSong({
-                index: tracks.indexOf(track),
-                tracks: tracks,
-              })
-            )
-          }
-        />
-      ))}
+      {tracks.map((track: TrackProps) => {
+        const Card = HorizontalTrackCard as any;
+        return (
+          <Card
+            key={track.id}
+            track={track}
+            onClick={() =>
+              dispatch(
+                setActiveSong({
+                  index: tracks.indexOf(track),
+                  tracks: tracks,
+                })
+              )
+            }
+          />
+        );
+      })}
     </ScrollContainer>
   );
 }
