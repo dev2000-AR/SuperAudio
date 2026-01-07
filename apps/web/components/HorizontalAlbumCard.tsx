@@ -2,13 +2,10 @@ import React from "react";
 import CustomImage from "./CustomImage";
 import { Album } from "@/interfaces/Albumv2";
 
-function HorizontalAlbumCard({
-  album,
-  onClick,
-}: {
+const HorizontalAlbumCard: React.FC<{
   album: Album;
   onClick: () => void;
-}): JSX.Element {
+}> = ({ album, onClick }) => {
   // Función para generar una URL de imagen basada en el creid
   const getAlbumImageUrl = (artist_id: string, creid: string) => {
     return `https://dig0ubfhli3b0.cloudfront.net/cdn1/music/${artist_id}/${creid}/front.jpg`; // Ajusta esta URL según tu configuración
