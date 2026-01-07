@@ -1061,3 +1061,19 @@ input[type="range"]:hover::-webkit-slider-thumb {
   background: rgba(255, 255, 255, 0.1);
   transform: rotate(90deg);
 }
+
+/* Animaciones para GenreBanner */
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+.animate-floating {
+  animation: floating 3s ease-in-out infinite;
+}
