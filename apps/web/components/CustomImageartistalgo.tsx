@@ -55,4 +55,4 @@ const CustomImageartistalgo: React.FC<CustomImageProps> = ({ src, className = ""
   ) : null;
 };
 
-export default CustomImageartistalgo;
+export default CustomImageartistalgo as any;

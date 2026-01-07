@@ -108,3 +108,13 @@ Este documento registra los obstáculos técnicos encontrados durante el desplie
 - **Causa**: Al identificar el patrón de fallos en `HorizontalAlbumList` y `HorizontalArtistListAlgolia`, se determinó que el resto de componentes de lista de la misma arquitectura fallarían en builds subsiguientes.
 - **Solución**: Se aplicó el cast a `any` en los puntos de renderizado y se eliminaron las `keys` internas redundantes en los componentes Card para estandarizar la arquitectura y evitar el bloqueo del compilador.
 - **Estado**: Aplicado.
+
+---
+
+## 8. Error de Tipos en Componente Base (CustomImage)
+
+- **Archivo**: `apps/web/components/ListItem.tsx` (y otros que usen `CustomImage`)
+- **Error**: `'CustomImage' cannot be used as a JSX component. Its return type 'JSX.Element | null' is not a valid JSX element.`
+- **Causa**: `CustomImage` es usado en casi todos los componentes de la aplicación. Al tener un tipo de retorno que TypeScript (en Vercel) considera ambiguo para React 18 (`JSX.Element | null`), bloquea el build en cada punto de uso.
+- **Solución**: Refactorizar `CustomImage` para asegurar un retorno compatible y usar el cast a `any` en los componentes donde el error persista.
+- **Estado**: En corrección.
