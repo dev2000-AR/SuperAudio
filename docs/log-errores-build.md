@@ -137,4 +137,14 @@ Este documento registra los obstáculos técnicos encontrados durante el desplie
 - **Error**: `Type error: Argument of type '() => Promise<typeof import(...)>' is not assignable to parameter of type 'DynamicOptions...'.`
 - **Causa**: Al usar `next/dynamic`, TypeScript valida el componente importado. Si hay un desfase de tipos en `JSX.Element` (como el recurrente problema de `key: number` vs `string` en React 18), la importación dinámica falla.
 - **Solución**: Exportar los componentes importados dinámicamente (`AudioPlayer`, `SidebarItem`, `AddToCollectionModel`, etc.) como `any` para bypass total. También se corrigieron errores de tipos en el componente `Link` dentro de `SidebarItem`.
-- **Estado**: Solución aplicada (Commit `consolidated-shell-fix`).
+- **Estado**: Solución aplicada (Commit `3b43df9`).
+
+---
+
+## 11. Error de Tipos en Componentes de Librerías (Provider, Head, etc.) en _app.tsx
+
+- **Archivo**: `apps/web/components/_app.tsx`
+- **Error**: `'Provider' cannot be used as a JSX component... Type 'number' is not assignable to type 'string'.`
+- **Causa**: El mismo conflicto sistémico de tipos de React 18 que afecta incluso a componentes de librerías externas como `react-redux` (`Provider`) y `next/head` (`Head`).
+- **Solución**: Aplicar cast a `any` en los componentes de librerías usados en `_app.tsx` antes de su uso en el JSX.
+- **Estado**: En corrección.

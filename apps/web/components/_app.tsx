@@ -13,18 +13,23 @@ import { ToastContainer } from "react-toastify";
 // Dynamically import components that rely on client-side APIs
 const AudioPlayer = dynamic(() => import("../components/AudioPlayer/AudioPlayer"), {
   ssr: false,
-});
+}) as any;
 const SidebarItem = dynamic(() => import("../components/sidebarItem"), {
   ssr: false,
-});
+}) as any;
 const AddToCollectionModel = dynamic(() => import("@/components/AddToCollectionModel"), {
   ssr: false,
-});
+}) as any;
+
+const ProviderAny = Provider as any;
+const HeadAny = Head as any;
+const NextNProgressAny = NextNProgress as any;
+const ToastContainerAny = ToastContainer as any;
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider store={store}>
-      <Head>
+    <ProviderAny store={store}>
+      <HeadAny>
         <link
           rel="preload"
           href="/musive-icons.ttf"
@@ -46,8 +51,8 @@ function MyApp({ Component, pageProps }: AppProps) {
           crossOrigin=""
           type="font/otf"
         />
-      </Head>
-      <NextNProgress
+      </HeadAny>
+      <NextNProgressAny
         color="#2bb540"
         stopDelayMs={10}
         height={3}
@@ -55,7 +60,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       />
       <Component {...pageProps} />
       <AudioPlayerComponent />
-    </Provider>
+    </ProviderAny >
   );
 }
 
@@ -69,7 +74,7 @@ function AudioPlayerComponent() {
 
   return (
     <div>
-      <ToastContainer
+      <ToastContainerAny
         position="top-center"
         autoClose={1000}
         hideProgressBar
@@ -83,9 +88,9 @@ function AudioPlayerComponent() {
       />
       <AddToCollectionModel />
       {router.pathname !== "/login" &&
-      router.pathname !== "/register" &&
-      router.pathname !== "/_error" &&
-      router.pathname !== "/" ? (
+        router.pathname !== "/register" &&
+        router.pathname !== "/_error" &&
+        router.pathname !== "/" ? (
         <AudioPlayer className={isKeyboardOpen ? "invisible" : "visible"} />
       ) : (
         <div></div>
@@ -97,9 +102,8 @@ function AudioPlayerComponent() {
         router.pathname !== "/" && (
           <div
             className={`bg-[#121212] hidden mobile:block tablet:block 
-      fixed bottom-0 left-0 right-0 w-full pt-2 pb-1 z-20 ${
-        isKeyboardOpen ? "invisible" : "visible"
-      }`}
+      fixed bottom-0 left-0 right-0 w-full pt-2 pb-1 z-20 ${isKeyboardOpen ? "invisible" : "visible"
+              }`}
           >
             <div className="flex flex-row justify-center ">
               <SidebarItem name="home" label="Home" />

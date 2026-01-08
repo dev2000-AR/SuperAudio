@@ -14,6 +14,11 @@ import AddToCollectionModel from "@/components/AddToCollectionModel";
 import { ToastContainer } from "react-toastify";
 import { useEffect } from "react";
 
+const ProviderAny = Provider as any;
+const HeadAny = Head as any;
+const NextNProgressAny = NextNProgress as any;
+const ToastContainerAny = ToastContainer as any;
+
 function MyApp({ Component, pageProps }: AppProps) {
   useForceUpdate();
 
@@ -36,8 +41,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [router.events]);
 
   return (
-    <Provider store={store}>
-      <Head>
+    <ProviderAny store={store}>
+      <HeadAny>
         <link
           rel="preload"
           href="/super-icons.ttf"
@@ -80,8 +85,8 @@ function MyApp({ Component, pageProps }: AppProps) {
             `,
           }}
         />
-      </Head>
-      <NextNProgress
+      </HeadAny>
+      <NextNProgressAny
         color="#009cde"
         stopDelayMs={10}
         height={3}
@@ -90,7 +95,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       <Component {...pageProps} />
       <AudioPlayerComponent />
-    </Provider>
+    </ProviderAny>
   );
 }
 
@@ -99,7 +104,7 @@ function AudioPlayerComponent() {
   const isKeyboardOpen = useDetectKeyboardOpen();
   return (
     <div>
-      <ToastContainer
+      <ToastContainerAny
         position="top-center"
         autoClose={1000}
         hideProgressBar
@@ -113,12 +118,12 @@ function AudioPlayerComponent() {
       />
       <AddToCollectionModel />
       {router.pathname !== "/login" &&
-      router.pathname !== "/register" &&
-      router.pathname !== "/_error" &&
+        router.pathname !== "/register" &&
+        router.pathname !== "/_error" &&
 
-router.pathname !== "/leg1" &&
-router.pathname !== "/privacidad" &&
-      router.pathname !== "/" ? (
+        router.pathname !== "/leg1" &&
+        router.pathname !== "/privacidad" &&
+        router.pathname !== "/" ? (
         <AudioPlayer className={isKeyboardOpen ? "invisible" : "visible"} />
       ) : (
         <div></div>
@@ -128,15 +133,14 @@ router.pathname !== "/privacidad" &&
         router.pathname !== "/_error" &&
         router.pathname !== "/playing" &&
         router.pathname !== "/leg1" &&
-         router.pathname !== "/yonovoy" &&
-         router.pathname !== "/privacidad" &&
+        router.pathname !== "/yonovoy" &&
+        router.pathname !== "/privacidad" &&
 
         router.pathname !== "/" && (
           <div
             className={`bg-[#000000] hidden mobile:block tablet:block 
-      fixed bottom-0 left-0 right-0 w-full pt-2 pb-1 z-20 ${
-        isKeyboardOpen ? "invisible" : "visible"
-      }`}
+      fixed bottom-0 left-0 right-0 w-full pt-2 pb-1 z-20 ${isKeyboardOpen ? "invisible" : "visible"
+              }`}
           >
             <div className="flex flex-row justify-center ">
               <SidebarItem name="home" label="Home" />
