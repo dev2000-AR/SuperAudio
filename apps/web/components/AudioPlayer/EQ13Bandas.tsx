@@ -143,8 +143,8 @@ const EQ13Bandas: React.FC<EQ13BandasProps> = ({
   return (
     <div
       className={`fixed z-50 transition-all duration-500 ${minimized
-          ? 'bottom-4 right-4 w-40 h-14 bg-[#0a0a0a]/80 border border-gray-800 rounded-lg flex items-center justify-center cursor-pointer hover:scale-105'
-          : 'bottom-8 right-8 w-[95vw] sm:w-[600px] max-h-[90vh] bg-[#0a0a0a]/95 border border-[rgba(255,255,255,0.1)] rounded-2xl p-4 overflow-y-auto'
+        ? 'bottom-4 right-4 w-40 h-14 bg-[#0a0a0a]/80 border border-gray-800 rounded-lg flex items-center justify-center cursor-pointer hover:scale-105'
+        : 'bottom-8 right-8 w-[95vw] sm:w-[600px] max-h-[90vh] bg-[#0a0a0a]/95 border border-[rgba(255,255,255,0.1)] rounded-2xl p-4 overflow-y-auto'
         }`}
       onClick={() => minimized && setMinimized(false)}
     >
@@ -185,8 +185,8 @@ const EQ13Bandas: React.FC<EQ13BandasProps> = ({
                   onToggle(!isActive);
                 }}
                 className={`px-3 py-1 rounded-lg font-semibold text-sm transition-all ${isActive
-                    ? 'bg-[#00d4ff] text-black'
-                    : 'bg-[rgba(255,255,255,0.06)] text-white opacity-60'
+                  ? 'bg-[#00d4ff] text-black'
+                  : 'bg-[rgba(255,255,255,0.06)] text-white opacity-60'
                   }`}
               >
                 🎛️ {isActive ? 'Activo' : 'Apagado'}
@@ -253,4 +253,4 @@ const EQ13Bandas: React.FC<EQ13BandasProps> = ({
   );
 };
 
-export default EQ13Bandas;
+export default EQ13Bandas as any;

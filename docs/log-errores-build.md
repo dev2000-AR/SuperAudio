@@ -127,4 +127,14 @@ Este documento registra los obstáculos técnicos encontrados durante el desplie
 - **Error**: `'LikeButton' cannot be used as a JSX component. Its return type 'Element' is not a valid JSX element.`
 - **Causa**: Conflicto de versiones de React/Types similar a los casos anteriores. Al ser un componente interactivo usado dentro de listas, bloquea el build del frontend.
 - **Solución**: Exportar el componente como `any` para saltar la validación de tipos en JSX.
-- **Estado**: En corrección.
+- **Estado**: Solución aplicada (Commit `480ecde`).
+
+---
+
+## 10. Errores de Tipos en Importaciones Dinámicas (App Shell)
+
+- **Archivo**: `apps/web/components/_app.tsx` (y componentes dinámicos como `AudioPlayer.tsx`)
+- **Error**: `Type error: Argument of type '() => Promise<typeof import(...)>' is not assignable to parameter of type 'DynamicOptions...'.`
+- **Causa**: Al usar `next/dynamic`, TypeScript valida el componente importado. Si hay un desfase de tipos en `JSX.Element` (como el recurrente problema de `key: number` vs `string` en React 18), la importación dinámica falla.
+- **Solución**: Exportar los componentes importados dinámicamente (`AudioPlayer`, `SidebarItem`, `AddToCollectionModel`, etc.) como `any` para bypass total. También se corrigieron errores de tipos en el componente `Link` dentro de `SidebarItem`.
+- **Estado**: Solución aplicada (Commit `consolidated-shell-fix`).

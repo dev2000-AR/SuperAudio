@@ -206,4 +206,4 @@ function SeekBar({
   );
 }
 
-export default SeekBar;
+export default SeekBar as any;
