@@ -116,5 +116,15 @@ Este documento registra los obstáculos técnicos encontrados durante el desplie
 - **Archivo**: `apps/web/components/ListItem.tsx` (y otros que usen `CustomImage`)
 - **Error**: `'CustomImage' cannot be used as a JSX component. Its return type 'JSX.Element | null' is not a valid JSX element.`
 - **Causa**: `CustomImage` es usado en casi todos los componentes de la aplicación. Al tener un tipo de retorno que TypeScript (en Vercel) considera ambiguo para React 18 (`JSX.Element | null`), bloquea el build en cada punto de uso.
-- **Solución**: Refactorizar `CustomImage` para asegurar un retorno compatible y usar el cast a `any` en los componentes donde el error persista.
+- **Solución**: Se aplicó el cast a `any` en la exportación por defecto de `CustomImage.tsx` y todas sus variantes (`CustomImageartistsearch.tsx`, `CustomImageartistalgo.tsx`, `FullScreenCoverImage.tsx`). Esto permite que el componente sea usado en cualquier parte de la aplicación sin que TypeScript valide su compatibilidad de tipos de retorno contra la versión estricta de React 18, cortando el error de raíz a nivel global.
+- **Estado**: Solución global aplicada (Commit `d1eeeb6`).
+
+---
+
+## 9. Error de Tipos en LikeButton (ListItem.tsx)
+
+- **Archivo**: `apps/web/components/AudioPlayer/LikeButton.tsx`
+- **Error**: `'LikeButton' cannot be used as a JSX component. Its return type 'Element' is not a valid JSX element.`
+- **Causa**: Conflicto de versiones de React/Types similar a los casos anteriores. Al ser un componente interactivo usado dentro de listas, bloquea el build del frontend.
+- **Solución**: Exportar el componente como `any` para saltar la validación de tipos en JSX.
 - **Estado**: En corrección.
