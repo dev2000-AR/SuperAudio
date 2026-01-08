@@ -1,4 +1,9 @@
-# Log de Errores de Construcción (Vercel Build Errors)
+# Registro de Errores de Build - SuperAudio
+
+> [!IMPORTANT]
+> **Cambio de Estrategia (07/01/2026)**: Tras múltiples errores de tipos en cascada, se ha detectado que la causa raíz es un conflicto de versiones de `@types/react` en el monorepo. Se abandona la táctica de parches individuales (`as any`) en favor de la **Opción A: Unificación de Tipos vía Resolutions**. Una vez estabilizado el build, se procederá a revertir los parches `as any` para recuperar la seguridad de tipos.
+
+---
 
 Este documento registra los obstáculos técnicos encontrados durante el despliegue en Vercel, sus causas y las soluciones aplicadas.
 
@@ -147,4 +152,4 @@ Este documento registra los obstáculos técnicos encontrados durante el desplie
 - **Error**: `'Provider' cannot be used as a JSX component... Type 'number' is not assignable to type 'string'.`
 - **Causa**: El mismo conflicto sistémico de tipos de React 18 que afecta incluso a componentes de librerías externas como `react-redux` (`Provider`) y `next/head` (`Head`).
 - **Solución**: Aplicar cast a `any` en los componentes de librerías usados en `_app.tsx` antes de su uso en el JSX.
-- **Estado**: En corrección.
+- **Estado**: Solución aplicada (Commit `5b4de47`).
