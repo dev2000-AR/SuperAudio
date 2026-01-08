@@ -1,4 +1,4 @@
-import { AxiosError } from "./../../node_modules/axios/index.d";
+import { AxiosError } from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import authService from "./authServices";
 import { CookieValueTypes, getCookie } from "cookies-next";

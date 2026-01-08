@@ -143,6 +143,7 @@ Este documento registra los obstáculos técnicos encontrados durante el desplie
 - **Causa**: Al usar `next/dynamic`, TypeScript valida el componente importado. Si hay un desfase de tipos en `JSX.Element` (como el recurrente problema de `key: number` vs `string` en React 18), la importación dinámica falla.
 - **Solución**: Exportar los componentes importados dinámicamente (`AudioPlayer`, `SidebarItem`, `AddToCollectionModel`, etc.) como `any` para bypass total. También se corrigieron errores de tipos en el componente `Link` dentro de `SidebarItem`.
 - **Estado**: Solución aplicada (Commit `3b43df9`).
+- **Estado**: Solución aplicada (Commit `015f6f7`). ¡Los errores de JSX han desaparecido! 🟢
 
 ---
 
@@ -153,3 +154,13 @@ Este documento registra los obstáculos técnicos encontrados durante el desplie
 - **Causa**: El mismo conflicto sistémico de tipos de React 18 que afecta incluso a componentes de librerías externas como `react-redux` (`Provider`) y `next/head` (`Head`).
 - **Solución**: Aplicar cast a `any` en los componentes de librerías usados en `_app.tsx` antes de su uso en el JSX.
 - **Estado**: Solución aplicada (Commit `5b4de47`).
+
+---
+
+## 12. Error de Resolución de Módulos (Importe Relativo a node_modules)
+
+- **Archivo**: `apps/web/stores/auth/authSlice.ts`
+- **Error**: `Cannot find module './../../node_modules/axios/index.d' or its corresponding type declarations.`
+- **Causa**: Un importe directo a `node_modules` usando rutas relativas. Esto falla en Vercel debido a la estructura de carpetas durante el build y el hoisting del monorepo.
+- **Solución**: Cambiar a un importe estándar de la librería: `import { AxiosError } from "axios";`.
+- **Estado**: Solución aplicada (Commit `consolidated-auth-fix`).
