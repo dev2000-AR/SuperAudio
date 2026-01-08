@@ -10,7 +10,6 @@ interface IProps {
 
 const SidebarItem = ({ name, label }: IProps) => {
   const router = useRouter();
-
   const isActive = () => {
     return router.pathname === `/${name.toLowerCase()}`;
   };
@@ -21,6 +20,7 @@ const SidebarItem = ({ name, label }: IProps) => {
       return `icon-${name.toLowerCase()}-filled mobile:text-[20px]`;
     }
   };
+
   return (
     <Link href={`/${name.toLowerCase()}`}>
       <div

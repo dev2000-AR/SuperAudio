@@ -8,16 +8,16 @@ interface GenreBannerProps {
   isPlaying: boolean;
 }
 
-const GenreBanner: React.FC<GenreBannerProps> = ({ 
-  coverImage, 
-  color, 
+const GenreBanner: React.FC<GenreBannerProps> = ({
+  coverImage,
+  color,
   genre,
-  isPlaying 
+  isPlaying
 }) => {
   return (
-    <div 
+    <div
       className="w-full h-[300px] relative flex items-center justify-center overflow-hidden"
-      style={{ 
+      style={{
         backgroundColor: '#121212',
         backgroundImage: `linear-gradient(to bottom, ${color}40, #121212)`
       }}
@@ -39,22 +39,6 @@ const GenreBanner: React.FC<GenreBannerProps> = ({
           />
         </div>
       </div>
-      <style jsx global>{`
-        @keyframes floating {
-          0% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-          100% {
-            transform: translateY(0px);
-          }
-        }
-        .animate-floating {
-          animation: floating 3s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 };

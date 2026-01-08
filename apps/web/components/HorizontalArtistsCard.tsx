@@ -14,7 +14,7 @@ function HorizontalArtistCard({
   const avatarColor = artist.avatar?.color || '#000000';
 
   return (
-    <div key={artist.id} className="mr-4 cursor-pointer" onClick={onClick}>
+    <div className="mr-4 cursor-pointer" onClick={onClick}>
       <div
         className="p-4 bg-gradient-to-t from-[#2c2a2a4a] to-[#2c2a2ac7] hover:bg-[#4340409d]
            tablet:hover:bg-transparent mobile:hover:bg-transparent

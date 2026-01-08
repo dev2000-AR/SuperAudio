@@ -24,9 +24,8 @@ function CustomImageartistsearch({ src, className, objectFit = "cover" }: any) {
           alt="img"
           layout="fill"
           objectFit={objectFit}
-          className={`${className} select-none noDrag transition-opacity duration-200 ${
-            isLoaded ? "opacity-100" : "opacity-0"
-          }`}
+          className={`${className} select-none noDrag transition-opacity duration-200 ${isLoaded ? "opacity-100" : "opacity-0"
+            }`}
           unoptimized={false}
           sizes="100vw"
           onLoadingComplete={() => setIsLoaded(true)}

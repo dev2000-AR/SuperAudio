@@ -55,7 +55,7 @@ const EQ13Bandas: React.FC<EQ13BandasProps> = ({
       audioSource.disconnect();
       audioSource.connect(preVolume);
       preVolume.connect(analyser);
-      
+
       if (filters.length > 0) {
         preVolume.connect(filters[0]);
         for (let i = 0; i < filters.length - 1; i++) {
@@ -84,7 +84,7 @@ const EQ13Bandas: React.FC<EQ13BandasProps> = ({
   useEffect(() => {
     if (!audioSource || !eqFiltersRef.current.length) return;
     reconectarCadenaAudio(isActive);
-    
+
     // Cuando se activa el EQ, establecer prevolumen al 34%
     if (isActive && preVolumeRef.current) {
       preVolumeRef.current.gain.value = 0.34;
@@ -97,7 +97,7 @@ const EQ13Bandas: React.FC<EQ13BandasProps> = ({
 
   const reconectarCadenaAudio = (conEQ: boolean) => {
     if (!audioSource || !eqFiltersRef.current.length || !audioContext || !preVolumeRef.current) return;
-    
+
     audioSource.disconnect();
     audioSource.connect(preVolumeRef.current);
     preVolumeRef.current.disconnect();
@@ -142,11 +142,10 @@ const EQ13Bandas: React.FC<EQ13BandasProps> = ({
 
   return (
     <div
-      className={`fixed z-50 transition-all duration-500 ${
-        minimized
-          ? 'bottom-4 right-4 w-40 h-14 bg-[#0a0a0a]/80 border border-gray-800 rounded-lg flex items-center justify-center cursor-pointer hover:scale-105'
-          : 'bottom-8 right-8 w-[95vw] sm:w-[600px] max-h-[90vh] bg-[#0a0a0a]/95 border border-[rgba(255,255,255,0.1)] rounded-2xl p-4 overflow-y-auto'
-      }`}
+      className={`fixed z-50 transition-all duration-500 ${minimized
+        ? 'bottom-4 right-4 w-40 h-14 bg-[#0a0a0a]/80 border border-gray-800 rounded-lg flex items-center justify-center cursor-pointer hover:scale-105'
+        : 'bottom-8 right-8 w-[95vw] sm:w-[600px] max-h-[90vh] bg-[#0a0a0a]/95 border border-[rgba(255,255,255,0.1)] rounded-2xl p-4 overflow-y-auto'
+        }`}
       onClick={() => minimized && setMinimized(false)}
     >
       {minimized ? (
@@ -185,11 +184,10 @@ const EQ13Bandas: React.FC<EQ13BandasProps> = ({
                   e.stopPropagation();
                   onToggle(!isActive);
                 }}
-                className={`px-3 py-1 rounded-lg font-semibold text-sm transition-all ${
-                  isActive
-                    ? 'bg-[#00d4ff] text-black'
-                    : 'bg-[rgba(255,255,255,0.06)] text-white opacity-60'
-                }`}
+                className={`px-3 py-1 rounded-lg font-semibold text-sm transition-all ${isActive
+                  ? 'bg-[#00d4ff] text-black'
+                  : 'bg-[rgba(255,255,255,0.06)] text-white opacity-60'
+                  }`}
               >
                 🎛️ {isActive ? 'Activo' : 'Apagado'}
               </button>
@@ -233,7 +231,7 @@ const EQ13Bandas: React.FC<EQ13BandasProps> = ({
                         value={gainValues[index]}
                         onChange={(e) => handleGainChange(index, parseFloat(e.target.value))}
                         className="band-slider w-full h-24 bg-transparent outline-none opacity-80 hover:opacity-100 cursor-pointer"
-                        style={{ writingMode: 'bt-lr' }}
+                        style={{ writingMode: 'vertical-lr' }}
                       />
                       <span className="text-gray-400 text-xs mt-1">{gainValues[index]} dB</span>
                     </div>

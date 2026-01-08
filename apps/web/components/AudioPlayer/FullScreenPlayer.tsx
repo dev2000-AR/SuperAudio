@@ -239,16 +239,17 @@ function FullScreenPlayer({
                     volume={volume}
                   />
                   <div>
-                    <Link
+                    <a
                       href={activeSong.src + `?filename=${activeSong.src}.mp3`}
                       download={`${activeSong.id}.mp3`}
                       target="_blank"
+                      rel="noreferrer"
                     >
                       <i
                         className="icon-download text-gray-400 text-[20px]
                 hover:text-white cursor-pointer mx-3 mobile:text-[14px]"
                       ></i>
-                    </Link>
+                    </a>
                     <i
                       onClick={() => router.push("/queue")}
                       className="icon-queue text-gray-400 text-[18px]

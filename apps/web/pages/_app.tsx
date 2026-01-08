@@ -113,12 +113,12 @@ function AudioPlayerComponent() {
       />
       <AddToCollectionModel />
       {router.pathname !== "/login" &&
-      router.pathname !== "/register" &&
-      router.pathname !== "/_error" &&
+        router.pathname !== "/register" &&
+        router.pathname !== "/_error" &&
 
-router.pathname !== "/leg1" &&
-router.pathname !== "/privacidad" &&
-      router.pathname !== "/" ? (
+        router.pathname !== "/leg1" &&
+        router.pathname !== "/privacidad" &&
+        router.pathname !== "/" ? (
         <AudioPlayer className={isKeyboardOpen ? "invisible" : "visible"} />
       ) : (
         <div></div>
@@ -128,15 +128,14 @@ router.pathname !== "/privacidad" &&
         router.pathname !== "/_error" &&
         router.pathname !== "/playing" &&
         router.pathname !== "/leg1" &&
-         router.pathname !== "/yonovoy" &&
-         router.pathname !== "/privacidad" &&
+        router.pathname !== "/yonovoy" &&
+        router.pathname !== "/privacidad" &&
 
         router.pathname !== "/" && (
           <div
             className={`bg-[#000000] hidden mobile:block tablet:block 
-      fixed bottom-0 left-0 right-0 w-full pt-2 pb-1 z-20 ${
-        isKeyboardOpen ? "invisible" : "visible"
-      }`}
+      fixed bottom-0 left-0 right-0 w-full pt-2 pb-1 z-20 ${isKeyboardOpen ? "invisible" : "visible"
+              }`}
           >
             <div className="flex flex-row justify-center ">
               <SidebarItem name="home" label="Home" />

@@ -21,6 +21,7 @@ const AddToCollectionModel = dynamic(() => import("@/components/AddToCollectionM
   ssr: false,
 });
 
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
@@ -55,7 +56,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       />
       <Component {...pageProps} />
       <AudioPlayerComponent />
-    </Provider>
+    </Provider >
   );
 }
 
@@ -83,9 +84,9 @@ function AudioPlayerComponent() {
       />
       <AddToCollectionModel />
       {router.pathname !== "/login" &&
-      router.pathname !== "/register" &&
-      router.pathname !== "/_error" &&
-      router.pathname !== "/" ? (
+        router.pathname !== "/register" &&
+        router.pathname !== "/_error" &&
+        router.pathname !== "/" ? (
         <AudioPlayer className={isKeyboardOpen ? "invisible" : "visible"} />
       ) : (
         <div></div>
@@ -97,9 +98,8 @@ function AudioPlayerComponent() {
         router.pathname !== "/" && (
           <div
             className={`bg-[#121212] hidden mobile:block tablet:block 
-      fixed bottom-0 left-0 right-0 w-full pt-2 pb-1 z-20 ${
-        isKeyboardOpen ? "invisible" : "visible"
-      }`}
+      fixed bottom-0 left-0 right-0 w-full pt-2 pb-1 z-20 ${isKeyboardOpen ? "invisible" : "visible"
+              }`}
           >
             <div className="flex flex-row justify-center ">
               <SidebarItem name="home" label="Home" />
