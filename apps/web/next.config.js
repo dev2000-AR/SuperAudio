@@ -18,7 +18,7 @@ const nextConfig = {
   compiler: {
     styledComponents: false,
   },
-  ...(process.env.NODE_ENV === "production" ? { assetPrefix: "https://superaudio.online" } : {}),
+  // ...(process.env.NODE_ENV === "production" ? { assetPrefix: "https://superaudio.online" } : {}),
   env: {
     ALGOLIA_APP_ID: "XLHDMY0KME",
     ALGOLIA_API_KEY: "2eef844f139e96fb4b3442d62e8bdbd9",
