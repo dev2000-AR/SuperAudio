@@ -35,4 +35,4 @@ const FullScreenCoverImage: React.FC<FullScreenCoverImageProps> = ({ activeSong,
   );
 };
 
-export default FullScreenCoverImage as any;
+export default FullScreenCoverImage;

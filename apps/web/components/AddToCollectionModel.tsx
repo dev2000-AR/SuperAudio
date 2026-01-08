@@ -251,4 +251,4 @@ function AddToCollectionModel() {
   );
 }
 
-export default AddToCollectionModel as any;
+export default AddToCollectionModel;

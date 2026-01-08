@@ -40,4 +40,4 @@ function CustomImage({ src, className, objectFit = "cover" }: any) {
   ) : null;
 }
 
-export default CustomImage as any;
+export default CustomImage;

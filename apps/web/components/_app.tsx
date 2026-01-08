@@ -13,23 +13,19 @@ import { ToastContainer } from "react-toastify";
 // Dynamically import components that rely on client-side APIs
 const AudioPlayer = dynamic(() => import("../components/AudioPlayer/AudioPlayer"), {
   ssr: false,
-}) as any;
+});
 const SidebarItem = dynamic(() => import("../components/sidebarItem"), {
   ssr: false,
-}) as any;
+});
 const AddToCollectionModel = dynamic(() => import("@/components/AddToCollectionModel"), {
   ssr: false,
-}) as any;
+});
 
-const ProviderAny = Provider as any;
-const HeadAny = Head as any;
-const NextNProgressAny = NextNProgress as any;
-const ToastContainerAny = ToastContainer as any;
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ProviderAny store={store}>
-      <HeadAny>
+    <Provider store={store}>
+      <Head>
         <link
           rel="preload"
           href="/musive-icons.ttf"
@@ -51,8 +47,8 @@ function MyApp({ Component, pageProps }: AppProps) {
           crossOrigin=""
           type="font/otf"
         />
-      </HeadAny>
-      <NextNProgressAny
+      </Head>
+      <NextNProgress
         color="#2bb540"
         stopDelayMs={10}
         height={3}
@@ -60,7 +56,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       />
       <Component {...pageProps} />
       <AudioPlayerComponent />
-    </ProviderAny >
+    </Provider >
   );
 }
 
@@ -74,7 +70,7 @@ function AudioPlayerComponent() {
 
   return (
     <div>
-      <ToastContainerAny
+      <ToastContainer
         position="top-center"
         autoClose={1000}
         hideProgressBar

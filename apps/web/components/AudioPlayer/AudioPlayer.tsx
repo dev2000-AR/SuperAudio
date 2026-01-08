@@ -410,4 +410,4 @@ function AudioPlayer({ className }: { className: string }) {
   );
 }
 
-export default AudioPlayer as any;
+export default AudioPlayer;

@@ -10,8 +10,6 @@ interface IProps {
 
 const SidebarItem = ({ name, label }: IProps) => {
   const router = useRouter();
-  const LinkAny = Link as any;
-
   const isActive = () => {
     return router.pathname === `/${name.toLowerCase()}`;
   };
@@ -24,7 +22,7 @@ const SidebarItem = ({ name, label }: IProps) => {
   };
 
   return (
-    <LinkAny href={`/${name.toLowerCase()}`}>
+    <Link href={`/${name.toLowerCase()}`}>
       <div
         className="group select-none cursor-pointer mt-4 flex flex-row items-center mobile:flex-col tablet:flex-col
        mini-laptop:w-full mini-laptop:mt-6 mobile:mt-0 tablet:mt-0 mobile:mx-8 tablet:mx-10"
@@ -50,8 +48,8 @@ const SidebarItem = ({ name, label }: IProps) => {
           {label}
         </p>
       </div>
-    </LinkAny>
+    </Link>
   );
 };
 
-export default SidebarItem as any;
+export default SidebarItem;

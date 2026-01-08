@@ -54,4 +54,4 @@ function LikeButton({ track_id, size, isList }: any) {
   );
 }
 
-export default LikeButton as any;
+export default LikeButton;

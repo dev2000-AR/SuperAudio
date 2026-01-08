@@ -14,11 +14,6 @@ import AddToCollectionModel from "@/components/AddToCollectionModel";
 import { ToastContainer } from "react-toastify";
 import { useEffect } from "react";
 
-const ProviderAny = Provider as any;
-const HeadAny = Head as any;
-const NextNProgressAny = NextNProgress as any;
-const ToastContainerAny = ToastContainer as any;
-
 function MyApp({ Component, pageProps }: AppProps) {
   useForceUpdate();
 
@@ -41,8 +36,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [router.events]);
 
   return (
-    <ProviderAny store={store}>
-      <HeadAny>
+    <Provider store={store}>
+      <Head>
         <link
           rel="preload"
           href="/super-icons.ttf"
@@ -85,8 +80,8 @@ function MyApp({ Component, pageProps }: AppProps) {
             `,
           }}
         />
-      </HeadAny>
-      <NextNProgressAny
+      </Head>
+      <NextNProgress
         color="#009cde"
         stopDelayMs={10}
         height={3}
@@ -95,7 +90,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       <Component {...pageProps} />
       <AudioPlayerComponent />
-    </ProviderAny>
+    </Provider>
   );
 }
 
@@ -104,7 +99,7 @@ function AudioPlayerComponent() {
   const isKeyboardOpen = useDetectKeyboardOpen();
   return (
     <div>
-      <ToastContainerAny
+      <ToastContainer
         position="top-center"
         autoClose={1000}
         hideProgressBar

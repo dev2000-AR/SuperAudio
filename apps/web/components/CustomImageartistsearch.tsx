@@ -40,4 +40,4 @@ function CustomImageartistsearch({ src, className, objectFit = "cover" }: any) {
   ) : null;
 }
 
-export default CustomImageartistsearch as any;
+export default CustomImageartistsearch;

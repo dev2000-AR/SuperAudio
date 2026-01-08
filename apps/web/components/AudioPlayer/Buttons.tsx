@@ -55,4 +55,4 @@ function Buttons({
   );
 }
 
-export default Buttons as any;
+export default Buttons;

@@ -11,16 +11,13 @@ function HorizontalArtistsList({ artists }: { artists: Artists[] }) {
       className="flex flex-row"
     >
       <div className="mx-4 mobile:mx-2 tablet:mx-3 mini-laptop:mx-2"></div>
-      {artists.map((artist: Artists) => {
-        const Card = HorizontalArtistCard as any;
-        return (
-          <Card
-            key={artist.id}
-            artist={artist}
-            onClick={() => router.push(`/artist/${artist.id}`)}
-          />
-        );
-      })}
+      {artists.map((artist: Artists) => (
+        <HorizontalArtistCard
+          key={artist.id}
+          artist={artist}
+          onClick={() => router.push(`/artist/${artist.id}`)}
+        />
+      ))}
     </ScrollContainer>
   );
 }

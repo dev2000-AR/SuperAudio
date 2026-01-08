@@ -253,4 +253,4 @@ const EQ13Bandas: React.FC<EQ13BandasProps> = ({
   );
 };
 
-export default EQ13Bandas as any;
+export default EQ13Bandas;

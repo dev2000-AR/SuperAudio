@@ -12,16 +12,13 @@ function HorizontalAlbumList({ album }: { album: Album[] }) {
       className="flex flex-row"
     >
       <div className="mx-4 mobile:mx-2 tablet:mx-3 mini-laptop:mx-2"></div>
-      {album.map((album: Album) => {
-        const Card = HorizontalAlbumCard as any;
-        return (
-          <Card
-            key={album.idcre.toString()}
-            album={album}
-            onClick={() => router.push(`/album/${album.idcre}`)}
-          />
-        );
-      })}
+      {album.map((album: Album) => (
+        <HorizontalAlbumCard
+          key={album.idcre.toString()}
+          album={album}
+          onClick={() => router.push(`/album/${album.idcre}`)}
+        />
+      ))}
     </ScrollContainer>
   );
 }
